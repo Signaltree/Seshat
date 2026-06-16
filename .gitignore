@@ -43,3 +43,6 @@ build/
 
 # Carpeta completa de IntelliJ
 .idea/
+
+# Historial de psql
+.psql_history
