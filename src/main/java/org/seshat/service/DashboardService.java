@@ -33,7 +33,10 @@ public class DashboardService {
     private long contar(String tabla, String columna, Integer anio, Integer mes) {
         if (!TABLAS.contains(tabla) || !COLUMNAS.contains(columna))
             throw new IllegalArgumentException("Tabla o columna inválida: " + tabla + "/" + columna);
-        if (anio == null) return jdbc.queryForObject("SELECT COUNT(*) FROM " + tabla, Long.class);
+        if (anio == null && mes == null) return jdbc.queryForObject("SELECT COUNT(*) FROM " + tabla, Long.class);
+        if (anio == null) return jdbc.queryForObject(
+            "SELECT COUNT(*) FROM " + tabla + " WHERE EXTRACT(MONTH FROM " + columna + ") = ?",
+            Long.class, mes);
         if (mes == null) return jdbc.queryForObject(
             "SELECT COUNT(*) FROM " + tabla + " WHERE EXTRACT(YEAR FROM " + columna + ") = ?", Long.class, anio);
         return jdbc.queryForObject(
@@ -48,9 +51,9 @@ public class DashboardService {
                 COALESCE(b.total, 0) as bautizos,
                 COALESCE(c.total, 0) as confirmaciones,
                 COALESCE(m.total, 0) as matrimonios
-            FROM (SELECT EXTRACT(YEAR FROM fecha_bautizo) as anio, COUNT(*) as total FROM BAUTIZO GROUP BY anio) b
-            FULL JOIN (SELECT EXTRACT(YEAR FROM fecha_confirmacion) as anio, COUNT(*) as total FROM CONFIRMACION GROUP BY anio) c ON b.anio = c.anio
-            FULL JOIN (SELECT EXTRACT(YEAR FROM fecha_matrimonio) as anio, COUNT(*) as total FROM MATRIMONIO GROUP BY anio) m ON COALESCE(b.anio, c.anio) = m.anio
+            FROM (SELECT EXTRACT(YEAR FROM fecha_bautizo)::int as anio, COUNT(*) as total FROM BAUTIZO GROUP BY anio) b
+            FULL JOIN (SELECT EXTRACT(YEAR FROM fecha_confirmacion)::int as anio, COUNT(*) as total FROM CONFIRMACION GROUP BY anio) c ON b.anio = c.anio
+            FULL JOIN (SELECT EXTRACT(YEAR FROM fecha_matrimonio)::int as anio, COUNT(*) as total FROM MATRIMONIO GROUP BY anio) m ON COALESCE(b.anio, c.anio) = m.anio
             ORDER BY anio
             """);
     }

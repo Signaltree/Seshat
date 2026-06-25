@@ -2,19 +2,18 @@
     <h2 class="text-2xl font-bold text-granate mb-6">Dashboard</h2>
 
     <!-- Filtros -->
-    <form class="flex gap-4 mb-6 items-end">
+    <form class="flex gap-4 mb-6 items-end" hx-get="/dashboard" hx-target="#main-content"
+          hx-trigger="change from:[name='anio'], change from:[name='mes']">
         <div>
             <label class="block text-gray-700 text-sm font-medium mb-1">Año</label>
-            <select name="anio" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
-                    hx-get="/dashboard" hx-target="#main-content" hx-trigger="change">
+            <select name="anio" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
                 <option value="">Todos</option>
                 <option th:each="a : ${anios}" th:value="${a}" th:text="${a}" th:selected="${a == anio}"></option>
             </select>
         </div>
         <div>
             <label class="block text-gray-700 text-sm font-medium mb-1">Mes</label>
-            <select name="mes" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
-                    hx-get="/dashboard" hx-target="#main-content" hx-trigger="change">
+            <select name="mes" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
                 <option value="">Todos</option>
                 <option value="1" th:selected="${mes == 1}">Enero</option>
                 <option value="2" th:selected="${mes == 2}">Febrero</option>
@@ -62,7 +61,10 @@
         var datos = [[${stats.resumenAnual}]];
         if (!datos || datos.length === 0) { datos = []; }
         var el = document.getElementById('chart');
-        if (!el || typeof Chart === 'undefined') return;
+        if (!el || typeof Chart === 'undefined') {
+            if (el && el.parentElement) el.parentElement.innerHTML = '<p class="text-gray-400 text-center py-4">Gráfico no disponible</p>';
+            return;
+        }
         if (window._chart) window._chart.destroy();
         window._chart = new Chart(el.getContext('2d'), {
             type: 'bar',
