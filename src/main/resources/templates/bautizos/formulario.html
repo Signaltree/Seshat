@@ -1,0 +1,51 @@
+<div class="bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto" th:fragment="formulario">
+    <h2 class="text-2xl font-bold text-granate mb-6" th:if="${bautizo.id == 0}">Nuevo Bautizo</h2>
+    <h2 class="text-2xl font-bold text-granate mb-6" th:unless="${bautizo.id == 0}">Editar Bautizo</h2>
+    <form hx-post="/bautizos/guardar" hx-target="#main-content" class="grid grid-cols-2 gap-4">
+        <input type="hidden" name="id" th:value="${bautizo.id}">
+        <div class="col-span-2">
+            <label class="block text-gray-700 font-medium mb-1">Persona</label>
+            <select name="persona_id" required
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                <option value="">Seleccione una persona</option>
+                <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombres} + ' ' + ${p.apellidos}"
+                        th:selected="${bautizo.persona_id == p.id}"></option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-1">Padre</label>
+            <input type="text" name="padre" th:value="${bautizo.padre}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-1">Madre</label>
+            <input type="text" name="madre" th:value="${bautizo.madre}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-1">Fecha Bautizo</label>
+            <input type="date" name="fecha_bautizo" th:value="${bautizo.fecha_bautizo}" required
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-1">Parroquia</label>
+            <input type="text" name="parroquia" th:value="${bautizo.parroquia}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-1">N° Libro</label>
+            <input type="text" name="n_libro" th:value="${bautizo.n_libro}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium mb-1">N° Folio</label>
+            <input type="text" name="n_folio" th:value="${bautizo.n_folio}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+        </div>
+        <div class="col-span-2 flex gap-4 mt-4">
+            <button type="submit" class="bg-cuero text-white px-8 py-2 rounded-lg hover:bg-cuero-light transition text-lg">Guardar</button>
+            <a href="/bautizos" hx-get="/bautizos" hx-target="#main-content"
+               class="bg-gray-300 text-gray-700 px-8 py-2 rounded-lg hover:bg-gray-400 transition text-lg text-center">Cancelar</a>
+        </div>
+    </form>
+</div>

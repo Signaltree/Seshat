@@ -1,0 +1,40 @@
+<div class="bg-white rounded-xl shadow-md p-6" th:fragment="listar">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-granate">Confirmaciones</h2>
+        <a href="/confirmaciones/nuevo" hx-get="/confirmaciones/nuevo" hx-target="#main-content"
+           class="bg-cuero text-white px-6 py-2 rounded-lg hover:bg-cuero-light transition text-lg">
+            + Nueva Confirmación
+        </a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b-2 border-gray-200 text-gray-600">
+                    <th class="py-3 px-4">ID</th>
+                    <th class="py-3 px-4">Persona ID</th>
+                    <th class="py-3 px-4">Fecha</th>
+                    <th class="py-3 px-4">Guía</th>
+                    <th class="py-3 px-4">Libro</th>
+                    <th class="py-3 px-4">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="c : ${confirmaciones}" class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-3 px-4" th:text="${c.id}">1</td>
+                    <td class="py-3 px-4" th:text="${c.persona_id}">1</td>
+                    <td class="py-3 px-4" th:text="${c.fecha_confirmacion}">2024-06-01</td>
+                    <td class="py-3 px-4" th:text="${c.guia}">Padre Juan</td>
+                    <td class="py-3 px-4" th:text="${c.n_libro} + '/' + ${c.n_folio}">1/5</td>
+                    <td class="py-3 px-4 flex gap-2">
+                        <a th:href="@{'/confirmaciones/' + ${c.id} + '/editar'}"
+                           hx-get="@{'/confirmaciones/' + ${c.id} + '/editar'}" hx-target="#main-content"
+                           class="text-granate hover:text-granate-light underline">Editar</a>
+                        <button hx-post="@{'/confirmaciones/eliminar/' + ${c.id}}" hx-target="#main-content"
+                                onclick="return confirm('¿Eliminar esta confirmación?')"
+                                class="text-red-600 hover:text-red-800 underline ml-2 cursor-pointer">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
