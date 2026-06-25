@@ -60,16 +60,18 @@
 
     <script>
         var datos = [[${stats.resumenAnual}]];
+        if (!datos || datos.length === 0) { datos = []; }
         var el = document.getElementById('chart');
+        if (!el || typeof Chart === 'undefined') return;
         if (window._chart) window._chart.destroy();
         window._chart = new Chart(el.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: datos.map(function(r) { return r.anio; }),
+                labels: datos.length ? datos.map(function(r) { return r.anio; }) : [],
                 datasets: [
-                    { label: 'Bautizos', data: datos.map(function(r) { return r.bautizos; }), backgroundColor: '#8B4513' },
-                    { label: 'Confirmaciones', data: datos.map(function(r) { return r.confirmaciones; }), backgroundColor: '#C9A84C' },
-                    { label: 'Matrimonios', data: datos.map(function(r) { return r.matrimonios; }), backgroundColor: '#5B2C3E' }
+                    { label: 'Bautizos', data: datos.length ? datos.map(function(r) { return r.bautizos; }) : [], backgroundColor: '#8B4513' },
+                    { label: 'Confirmaciones', data: datos.length ? datos.map(function(r) { return r.confirmaciones; }) : [], backgroundColor: '#C9A84C' },
+                    { label: 'Matrimonios', data: datos.length ? datos.map(function(r) { return r.matrimonios; }) : [], backgroundColor: '#5B2C3E' }
                 ]
             },
             options: {
