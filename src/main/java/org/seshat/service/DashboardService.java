@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class DashboardService {
+
+    private static final Set<String> TABLAS = Set.of("PERSONA", "BAUTIZO", "CONFIRMACION", "MATRIMONIO");
+    private static final Set<String> COLUMNAS = Set.of("fecha_registro", "fecha_bautizo", "fecha_confirmacion", "fecha_matrimonio");
 
     private final JdbcTemplate jdbc;
 
@@ -27,6 +31,8 @@ public class DashboardService {
     }
 
     private long contar(String tabla, String columna, Integer anio, Integer mes) {
+        if (!TABLAS.contains(tabla) || !COLUMNAS.contains(columna))
+            throw new IllegalArgumentException("Tabla o columna inválida: " + tabla + "/" + columna);
         if (anio == null) return jdbc.queryForObject("SELECT COUNT(*) FROM " + tabla, Long.class);
         if (mes == null) return jdbc.queryForObject(
             "SELECT COUNT(*) FROM " + tabla + " WHERE EXTRACT(YEAR FROM " + columna + ") = ?", Long.class, anio);
@@ -51,13 +57,13 @@ public class DashboardService {
 
     public List<Integer> obtenerAniosDisponibles() {
         return jdbc.queryForList("""
-            SELECT DISTINCT EXTRACT(YEAR FROM fecha) as anio FROM (
+            SELECT DISTINCT EXTRACT(YEAR FROM fecha)::int as anio FROM (
                 SELECT fecha_bautizo as fecha FROM BAUTIZO
-                UNION
+                UNION ALL
                 SELECT fecha_confirmacion FROM CONFIRMACION
-                UNION
+                UNION ALL
                 SELECT fecha_matrimonio FROM MATRIMONIO
-                UNION
+                UNION ALL
                 SELECT fecha_registro FROM PERSONA
             ) todas ORDER BY anio DESC
             """, Integer.class);
