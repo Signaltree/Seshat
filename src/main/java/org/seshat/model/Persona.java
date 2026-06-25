@@ -13,7 +13,8 @@ public class Persona {
     private String telefono;
     private LocalDate fecha_registro;
 
-    //Constructor
+    //Constructors
+    public Persona() {}
     public Persona(int id, String nombres, String apellidos, String rut, String email, String direccion, String telefono, LocalDate fecha_registro, LocalDate fecha_nacimiento) {
         this.id = id;
         this.nombres = nombres;
@@ -39,6 +40,7 @@ public class Persona {
     public LocalDate getFecha_registro() {return fecha_registro;}
 
     //Setters
+    public void setId(int id){this.id = id;}
     public void setNombres(String nombres){this.nombres = nombres;}
     public void setApellidos(String apellidos){this.apellidos = apellidos;}
     public void setRut(String rut){this.rut = rut;}
