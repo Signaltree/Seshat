@@ -2,11 +2,11 @@
     <h2 class="text-2xl font-bold text-granate mb-6">Dashboard</h2>
 
     <!-- Filtros -->
-    <form hx-get="/dashboard" hx-target="#dashboard-content" class="flex gap-4 mb-6 items-end">
+    <form class="flex gap-4 mb-6 items-end">
         <div>
             <label class="block text-gray-700 text-sm font-medium mb-1">Año</label>
             <select name="anio" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
-                    hx-get="/dashboard" hx-target="#dashboard-content" hx-trigger="change">
+                    hx-get="/dashboard" hx-target="#main-content" hx-trigger="change">
                 <option value="">Todos</option>
                 <option th:each="a : ${anios}" th:value="${a}" th:text="${a}" th:selected="${a == anio}"></option>
             </select>
@@ -14,7 +14,7 @@
         <div>
             <label class="block text-gray-700 text-sm font-medium mb-1">Mes</label>
             <select name="mes" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
-                    hx-get="/dashboard" hx-target="#dashboard-content" hx-trigger="change">
+                    hx-get="/dashboard" hx-target="#main-content" hx-trigger="change">
                 <option value="">Todos</option>
                 <option value="1" th:selected="${mes == 1}">Enero</option>
                 <option value="2" th:selected="${mes == 2}">Febrero</option>
