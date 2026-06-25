@@ -1,0 +1,38 @@
+<div class="bg-white rounded-xl shadow-md p-6" th:fragment="listar">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-granate">Personas</h2>
+        <a href="/personas/nuevo" hx-get="/personas/nuevo" hx-target="#main-content"
+           class="bg-cuero text-white px-6 py-2 rounded-lg hover:bg-cuero-light transition text-lg">
+            + Nueva Persona
+        </a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b-2 border-gray-200 text-gray-600">
+                    <th class="py-3 px-4">RUT</th>
+                    <th class="py-3 px-4">Nombres</th>
+                    <th class="py-3 px-4">Apellidos</th>
+                    <th class="py-3 px-4">Teléfono</th>
+                    <th class="py-3 px-4">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${personas}" class="border-b border-gray-100 hover:bg-gray-50">
+                    <td class="py-3 px-4" th:text="${p.rut}">12.345.678-9</td>
+                    <td class="py-3 px-4" th:text="${p.nombres}">Juan</td>
+                    <td class="py-3 px-4" th:text="${p.apellidos}">Pérez</td>
+                    <td class="py-3 px-4" th:text="${p.telefono}">+56 9 1234 5678</td>
+                    <td class="py-3 px-4 flex gap-2">
+                        <a th:href="@{'/personas/' + ${p.id} + '/editar'}"
+                           hx-get="@{'/personas/' + ${p.id} + '/editar'}" hx-target="#main-content"
+                           class="text-granate hover:text-granate-light underline">Editar</a>
+                        <button hx-post="@{'/personas/eliminar/' + ${p.id}}" hx-target="#main-content"
+                                onclick="return confirm('¿Eliminar esta persona?')"
+                                class="text-red-600 hover:text-red-800 underline ml-2 cursor-pointer">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
