@@ -1,5 +1,6 @@
 <div class="padrinos-section col-span-2 mt-6 border-t pt-4" th:fragment="padrinos" xmlns:th="http://www.thymeleaf.org">
     <h3 class="text-lg font-bold text-granate mb-3">Padrinos</h3>
+    <div th:if="${error}" class="bg-red-100 text-red-700 px-3 py-2 rounded-lg mb-3" th:text="${error}"></div>
     <div th:if="${erroresPadrino != null and !erroresPadrino.isEmpty()}" class="bg-red-100 text-red-700 px-3 py-2 rounded-lg mb-3">
         <ul class="list-disc list-inside">
             <li th:each="err : ${erroresPadrino}" th:text="${err.value}"></li>
