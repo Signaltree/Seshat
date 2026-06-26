@@ -57,4 +57,10 @@
                class="bg-gray-300 text-gray-700 px-8 py-2 rounded-lg hover:bg-gray-400 transition text-lg text-center">Cancelar</a>
         </div>
     </form>
+    <div th:if="${matrimonio.id != 0}"
+         th:attr="hx-get=@{/certificados/fragmento/MATRIMONIO/{id}(id=${matrimonio.id}, personaId=${matrimonio.persona1_id})}"
+         hx-trigger="load"
+         hx-target="this"
+         hx-swap="outerHTML">
+    </div>
 </div>
