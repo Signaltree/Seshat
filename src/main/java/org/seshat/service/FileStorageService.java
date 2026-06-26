@@ -36,7 +36,9 @@ public class FileStorageService {
         if (original != null && original.contains("."))
             extension = original.substring(original.lastIndexOf("."));
         String nombre = UUID.randomUUID() + extension;
-        Path destino = uploadDir.resolve(subdirectorio).resolve(nombre);
+        Path destino = uploadDir.resolve(subdirectorio).resolve(nombre).normalize();
+        if (!destino.startsWith(uploadDir))
+            throw new SecurityException("Ruta fuera del directorio permitido");
         try {
             Files.copy(archivo.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
             return subdirectorio + "/" + nombre;
