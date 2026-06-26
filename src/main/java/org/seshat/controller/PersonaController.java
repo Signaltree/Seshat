@@ -2,6 +2,7 @@ package org.seshat.controller;
 
 import org.seshat.model.Persona;
 import org.seshat.service.PersonaService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,12 @@ public class PersonaController {
 
     @PostMapping("/guardar")
     public String guardar(@RequestParam(defaultValue = "0") int id, Persona p, Model model) {
+        var errores = service.validar(p);
+        if (!errores.isEmpty()) {
+            model.addAttribute("persona", p);
+            model.addAttribute("errores", errores);
+            return "personas/formulario";
+        }
         if (id > 0) { p.setId(id); service.actualizar(p); }
         else service.guardar(p);
         model.addAttribute("personas", service.listar());
@@ -41,7 +48,11 @@ public class PersonaController {
 
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable int id, Model model) {
-        service.eliminar(id);
+        try {
+            service.eliminar(id);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("error", "No se puede eliminar: la persona tiene registros asociados (bautizos, confirmaciones o matrimonios).");
+        }
         model.addAttribute("personas", service.listar());
         return "personas/listar";
     }

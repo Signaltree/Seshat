@@ -1,4 +1,6 @@
 <div class="bg-white rounded-xl shadow-md p-6" th:fragment="listar">
+    <div th:if="${error}" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg mb-4" th:text="${error}"></div>
+    <div th:if="${exito}" class="bg-green-100 text-green-700 px-4 py-2 rounded-lg mb-4" th:text="${exito}"></div>
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-granate">Personas</h2>
         <a href="/personas/nuevo" hx-get="/personas/nuevo" hx-target="#main-content"
@@ -27,9 +29,10 @@
                         <a th:href="@{'/personas/' + ${p.id} + '/editar'}"
                            hx-get="@{'/personas/' + ${p.id} + '/editar'}" hx-target="#main-content"
                            class="text-granate hover:text-granate-light underline">Editar</a>
-                        <button hx-post="@{'/personas/eliminar/' + ${p.id}}" hx-target="#main-content"
-                                onclick="return confirm('¿Eliminar esta persona?')"
-                                class="text-red-600 hover:text-red-800 underline ml-2 cursor-pointer">Eliminar</button>
+                        <form hx-post="@{'/personas/eliminar/' + ${p.id}}" hx-target="#main-content"
+                              onsubmit="return confirm('¿Eliminar esta persona?')" class="inline">
+                            <button type="submit" class="text-red-600 hover:text-red-800 underline ml-2 cursor-pointer">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>

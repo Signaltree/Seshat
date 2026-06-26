@@ -3,6 +3,7 @@ package org.seshat.controller;
 import org.seshat.model.Matrimonio;
 import org.seshat.service.MatrimonioService;
 import org.seshat.service.PersonaService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,11 @@ public class MatrimonioController {
 
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable int id, Model model) {
-        service.eliminar(id);
+        try {
+            service.eliminar(id);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("error", "No se puede eliminar: el matrimonio tiene registros asociados.");
+        }
         model.addAttribute("matrimonios", service.listar());
         return "matrimonios/listar";
     }

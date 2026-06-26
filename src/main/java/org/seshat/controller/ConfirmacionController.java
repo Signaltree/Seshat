@@ -3,6 +3,7 @@ package org.seshat.controller;
 import org.seshat.model.Confirmacion;
 import org.seshat.service.ConfirmacionService;
 import org.seshat.service.PersonaService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,11 @@ public class ConfirmacionController {
 
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable int id, Model model) {
-        service.eliminar(id);
+        try {
+            service.eliminar(id);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("error", "No se puede eliminar: la confirmación tiene registros asociados.");
+        }
         model.addAttribute("confirmaciones", service.listar());
         return "confirmaciones/listar";
     }

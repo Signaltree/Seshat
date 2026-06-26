@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seshat — Iniciar Sesión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        granate: { DEFAULT: '#5B2C3E', light: '#7A3F55', dark: '#3D1D2A' },
+                        cuero: { DEFAULT: '#8B4513', light: '#A0522D' },
+                        dorado: '#C9A84C',
+                        crema: '#F5F0EB'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-crema min-h-screen flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-md p-8 w-full max-w-md">
+        <h1 class="text-3xl font-bold text-granate text-center mb-2">Seshat</h1>
+        <p class="text-sm text-gray-500 text-center mb-8">Parroquia María Misionera</p>
+        <form method="post" th:action="@{/login}" class="flex flex-col gap-4">
+            <div th:if="${param.error}" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm">
+                Usuario o contraseña incorrectos
+            </div>
+            <div th:if="${param.logout}" class="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm">
+                Sesión cerrada correctamente
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Usuario</label>
+                <input type="text" name="username" required autofocus
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Contraseña</label>
+                <input type="password" name="password" required
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+            </div>
+            <button type="submit"
+                    class="bg-granate text-white py-3 rounded-lg hover:bg-granate-light transition text-lg font-medium mt-2">
+                Ingresar
+            </button>
+        </form>
+    </div>
+</body>
+</html>

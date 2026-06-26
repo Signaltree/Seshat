@@ -30,7 +30,7 @@ public class PadrinoController {
         model.addAttribute("roles", roles);
         model.addAttribute("tipo", tipo);
         model.addAttribute("entidadId", id);
-        return "fragmentos/padrinos";
+        return "fragmentos/padrinos :: padrinos";
     }
 
     @PostMapping("/agregar")
@@ -40,8 +40,13 @@ public class PadrinoController {
                           @RequestParam String rol,
                           @RequestParam(required = false) String rolOtro,
                           Model model) {
-        String rolFinal = "Otro".equals(rol) && rolOtro != null && !rolOtro.isBlank() ? rolOtro.trim() : rol;
-        Map<String, String> errores = padrinoService.agregar(tipo, entidadId, nombres, apellidos, rut, rolFinal);
+        try {
+            String rolFinal = "Otro".equals(rol) && rolOtro != null && !rolOtro.isBlank() ? rolOtro.trim() : rol;
+            Map<String, String> errores = padrinoService.agregar(tipo, entidadId, nombres, apellidos, rut, rolFinal);
+            model.addAttribute("erroresPadrino", errores);
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al agregar padrino: " + e.getMessage());
+        }
 
         List<Padrino> padrinos = padrinoService.listarPorSacramento(tipo, entidadId);
         Map<Integer, String> roles = new HashMap<>();
@@ -52,13 +57,16 @@ public class PadrinoController {
         model.addAttribute("roles", roles);
         model.addAttribute("tipo", tipo);
         model.addAttribute("entidadId", entidadId);
-        model.addAttribute("erroresPadrino", errores);
-        return "fragmentos/padrinos";
+        return "fragmentos/padrinos :: padrinos";
     }
 
     @DeleteMapping("/{id}/{tipo}/{sacramentoId}")
     public String eliminar(@PathVariable int id, @PathVariable String tipo, @PathVariable int sacramentoId, Model model) {
-        padrinoService.eliminar(tipo, id, sacramentoId);
+        try {
+            padrinoService.eliminar(tipo, id, sacramentoId);
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al eliminar: " + e.getMessage());
+        }
 
         List<Padrino> padrinos = padrinoService.listarPorSacramento(tipo, sacramentoId);
         Map<Integer, String> roles = new HashMap<>();
@@ -69,6 +77,6 @@ public class PadrinoController {
         model.addAttribute("roles", roles);
         model.addAttribute("tipo", tipo);
         model.addAttribute("entidadId", sacramentoId);
-        return "fragmentos/padrinos";
+        return "fragmentos/padrinos :: padrinos";
     }
 }
