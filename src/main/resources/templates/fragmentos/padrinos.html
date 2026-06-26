@@ -45,9 +45,9 @@
                     class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate"
                     onchange="var el=this.parentElement.querySelector('input[name=rolOtro]');if(el)el.style.display=this.value==='Otro'?'block':'none'">
                 <option value="">Seleccione</option>
-                <option value="Padrino">Padrino</option>
-                <option value="Madrina">Madrina</option>
-                <option value="Testigo">Testigo</option>
+                <option value="Padrino" th:if="${tipo == 'BAUTIZO' or tipo == 'CONFIRMACION'}">Padrino</option>
+                <option value="Madrina" th:if="${tipo == 'BAUTIZO' or tipo == 'CONFIRMACION'}">Madrina</option>
+                <option value="Testigo" th:if="${tipo == 'MATRIMONIO'}">Testigo</option>
                 <option value="Otro">Otro...</option>
             </select>
             <input type="text" name="rolOtro" placeholder="Especifique rol"

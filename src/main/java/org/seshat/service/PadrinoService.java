@@ -32,13 +32,13 @@ public class PadrinoService {
         if (nombres == null || nombres.isBlank()) errores.put("nombres", "El nombre es obligatorio");
         if (apellidos == null || apellidos.isBlank()) errores.put("apellidos", "Los apellidos son obligatorios");
         if (rol == null || rol.isBlank()) errores.put("rol", "El rol es obligatorio");
-        if (rut != null) rut = rut.trim();
-        if (rut != null && !rut.isBlank() && !ValidacionUtil.validarRut(rut)) {
+        String rutLimpio = rut != null ? rut.trim() : null;
+        if (rutLimpio != null && !rutLimpio.isBlank() && !ValidacionUtil.validarRut(rutLimpio)) {
             errores.put("rut", "RUT inválido");
         }
         if (!errores.isEmpty()) return errores;
 
-        Padrino p = new Padrino(0, nombres.trim(), apellidos.trim(), rut);
+        Padrino p = new Padrino(0, nombres.trim(), apellidos.trim(), rutLimpio);
         int padrinoId = repo.save(p);
 
         switch (tipo) {
