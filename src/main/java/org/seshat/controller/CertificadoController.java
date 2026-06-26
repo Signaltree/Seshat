@@ -2,7 +2,9 @@ package org.seshat.controller;
 
 import org.seshat.model.Certificado;
 import org.seshat.service.CertificadoService;
+import org.seshat.service.FileStorageService;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -18,8 +22,12 @@ import java.util.List;
 public class CertificadoController {
 
     private final CertificadoService service;
+    private final FileStorageService fileStorage;
 
-    public CertificadoController(CertificadoService service) { this.service = service; }
+    public CertificadoController(CertificadoService service, FileStorageService fileStorage) {
+        this.service = service;
+        this.fileStorage = fileStorage;
+    }
 
     @PostMapping("/subir")
     public String subir(@RequestParam int personaId, @RequestParam String tipo,
@@ -51,14 +59,19 @@ public class CertificadoController {
 
     @GetMapping("/{id}/archivo")
     public ResponseEntity<Resource> descargar(@PathVariable int id) {
-        Certificado c = service.buscarPorId(id);
-        Resource r = service.cargarComoResource(id);
-        String contentType = c.getTipoArchivo() != null ? c.getTipoArchivo() : "application/octet-stream";
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename=\"" + c.getNombreOriginal() + "\"")
-                .body(r);
+        try {
+            Certificado c = service.buscarPorId(id);
+            Resource r = fileStorage.cargarComoResource(c.getRutaArchivo());
+            String contentType = c.getTipoArchivo() != null ? c.getTipoArchivo() : "application/octet-stream";
+            String filename = URLEncoder.encode(c.getNombreOriginal(), StandardCharsets.UTF_8);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "inline; filename*=UTF-8''" + filename)
+                    .body(r);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -68,7 +81,7 @@ public class CertificadoController {
         try {
             service.eliminar(id);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al eliminar archivo");
+            model.addAttribute("error", "Error al eliminar archivo: " + e.getMessage());
         }
         List<Certificado> certificados = service.listarPorEntidad(tipo, entidadId);
         model.addAttribute("certificados", certificados);
