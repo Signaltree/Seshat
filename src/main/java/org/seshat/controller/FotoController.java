@@ -2,6 +2,7 @@ package org.seshat.controller;
 
 import org.seshat.model.Foto;
 import org.seshat.service.FotoService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,11 +26,15 @@ public class FotoController {
     @PostMapping("/subir")
     public String subir(@RequestParam int personaId,
                         @RequestParam(required = false) String descripcion,
-                        @RequestParam(required = false) LocalDate fechaFoto,
+                        @RequestParam(required = false) String fechaFoto,
                         @RequestParam MultipartFile archivo,
                         Model model) {
+        LocalDate fecha = null;
+        if (fechaFoto != null && !fechaFoto.isBlank()) {
+            fecha = LocalDate.parse(fechaFoto);
+        }
         try {
-            service.guardar(personaId, descripcion, fechaFoto, archivo);
+            service.guardar(personaId, descripcion, fecha, archivo);
         } catch (Exception e) {
             model.addAttribute("error", "Error al subir foto: " + e.getMessage());
         }
@@ -49,13 +54,17 @@ public class FotoController {
 
     @GetMapping("/{id}/archivo")
     public ResponseEntity<Resource> ver(@PathVariable int id) {
-        Foto f = service.buscarPorId(id);
-        Resource r = service.cargarComoResource(id);
-        String contentType = f.getTipoArchivo() != null ? f.getTipoArchivo() : "image/jpeg";
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
-                .body(r);
+        try {
+            Foto f = service.buscarPorId(id);
+            Resource r = service.cargarComoResource(id);
+            String contentType = f.getTipoArchivo() != null ? f.getTipoArchivo() : "image/jpeg";
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
+                    .body(r);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -63,7 +72,7 @@ public class FotoController {
         try {
             service.eliminar(id);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al eliminar foto");
+            model.addAttribute("error", "Error al eliminar foto: " + e.getMessage());
         }
         List<Foto> fotos = service.listarPorPersona(personaId);
         model.addAttribute("fotos", fotos);

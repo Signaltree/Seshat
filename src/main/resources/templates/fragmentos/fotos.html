@@ -16,8 +16,8 @@
         </div>
     </div>
     <div th:if="${#lists.isEmpty(fotos)}" class="text-gray-400 text-sm italic mb-4">Sin fotos</div>
-    <form hx-post="/fotos/subir" hx-target="closest .fotos-section" hx-swap="outerHTML"
-          enctype="multipart/form-data" class="flex items-end gap-3 flex-wrap">
+    <form th:attr="hx-post=@{/fotos/subir}" hx-target="closest .fotos-section" hx-swap="outerHTML"
+          hx-encoding="multipart/form-data" enctype="multipart/form-data" class="flex items-end gap-3 flex-wrap">
         <input type="hidden" name="personaId" th:value="${personaId}">
         <div>
             <label class="block text-xs text-gray-500 mb-1">Descripción</label>
