@@ -43,7 +43,7 @@ public class CertificadoRepository {
         jdbc.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                 "INSERT INTO CERTIFICADO (persona_id, tipo, entidad_id, nombre_original, ruta_archivo, tipo_archivo, fecha_subida) VALUES (?,?,?,?,?,?,?)",
-                Statement.RETURN_GENERATED_KEYS);
+                new String[]{"id"});
             ps.setInt(1, c.getPersonaId());
             ps.setString(2, c.getTipo());
             ps.setInt(3, c.getEntidadId());

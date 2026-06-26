@@ -42,7 +42,7 @@ public class FotoRepository {
         jdbc.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                 "INSERT INTO FOTO (persona_id, descripcion, ruta_archivo, tipo_archivo, fecha_subida, fecha_foto) VALUES (?,?,?,?,?,?)",
-                Statement.RETURN_GENERATED_KEYS);
+                new String[]{"id"});
             ps.setInt(1, f.getPersonaId());
             ps.setString(2, f.getDescripcion());
             ps.setString(3, f.getRutaArchivo());

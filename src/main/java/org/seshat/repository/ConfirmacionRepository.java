@@ -43,7 +43,7 @@ public class ConfirmacionRepository {
         jdbc.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO CONFIRMACION (persona_id, fecha_confirmacion, guia, n_libro, n_folio, parroquia, ruta_imagen) VALUES (?,?,?,?,?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS);
+                    new String[]{"id"});
             ps.setInt(1, c.getPersona_id());
             ps.setObject(2, c.getFecha_confirmacion());
             ps.setString(3, c.getGuia());

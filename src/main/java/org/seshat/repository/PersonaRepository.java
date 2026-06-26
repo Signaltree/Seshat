@@ -44,7 +44,7 @@ public class PersonaRepository {
         jdbc.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO PERSONA (nombres, apellidos, rut, fecha_nacimiento, direccion, telefono, email, fecha_registro) VALUES (?,?,?,?,?,?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS);
+                    new String[]{"id"});
             ps.setString(1, p.getNombres());
             ps.setString(2, p.getApellidos());
             ps.setString(3, p.getRut());

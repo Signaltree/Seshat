@@ -45,7 +45,7 @@ public class MatrimonioRepository {
         jdbc.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO MATRIMONIO (persona1_id, persona2_id, sacerdote, fecha_matrimonio, direccion, n_libro, n_folio, parroquia, ruta_imagen) VALUES (?,?,?,?,?,?,?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS);
+                    new String[]{"id"});
             ps.setInt(1, m.getPersona1_id());
             ps.setInt(2, m.getPersona2_id());
             ps.setString(3, m.getSacerdote());

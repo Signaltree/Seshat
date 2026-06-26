@@ -44,7 +44,7 @@ public class BautizoRepository {
         jdbc.update(con -> {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO BAUTIZO (persona_id, padre, madre, fecha_bautizo, n_libro, n_folio, parroquia, ruta_imagen) VALUES (?,?,?,?,?,?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS);
+                    new String[]{"id"});
             ps.setInt(1, b.getPersona_id());
             ps.setString(2, b.getPadre());
             ps.setString(3, b.getMadre());
