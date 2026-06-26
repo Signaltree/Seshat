@@ -1,0 +1,60 @@
+<div class="padrinos-section col-span-2 mt-6 border-t pt-4" th:fragment="padrinos" xmlns:th="http://www.thymeleaf.org">
+    <h3 class="text-lg font-bold text-granate mb-3">Padrinos</h3>
+    <div th:if="${erroresPadrino != null and !erroresPadrino.isEmpty()}" class="bg-red-100 text-red-700 px-3 py-2 rounded-lg mb-3">
+        <ul class="list-disc list-inside">
+            <li th:each="err : ${erroresPadrino}" th:text="${err.value}"></li>
+        </ul>
+    </div>
+    <div class="space-y-2 mb-4">
+        <div th:each="padrino : ${padrinos}" class="flex items-center justify-between bg-gray-50 px-4 py-2 rounded-lg">
+            <div>
+                <span class="font-medium" th:text="${padrino.nombres} + ' ' + ${padrino.apellidos}"></span>
+                <span th:if="${padrino.rut}" class="text-gray-500 text-sm ml-2" th:text="'(' + ${padrino.rut} + ')'"></span>
+                <span class="inline-block bg-granate text-white text-xs px-2 py-0.5 rounded-full ml-2" th:text="${roles[padrino.id]}"></span>
+            </div>
+            <button th:attr="hx-delete=@{/padrinos/{id}/{tipo}/{sacramentoId}(id=${padrino.id}, tipo=${tipo}, sacramentoId=${entidadId})}"
+                    hx-target="closest .padrinos-section" hx-swap="outerHTML"
+                    hx-confirm="¿Eliminar este padrino?"
+                    class="text-red-600 hover:text-red-800 text-sm font-medium">Eliminar</button>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(padrinos)}" class="text-gray-400 text-sm italic mb-4">Sin padrinos registrados</div>
+    <form th:attr="hx-post=@{/padrinos/agregar}" hx-target="closest .padrinos-section" hx-swap="outerHTML"
+          class="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-gray-50 rounded-lg">
+        <input type="hidden" name="tipo" th:value="${tipo}">
+        <input type="hidden" name="entidadId" th:value="${entidadId}">
+        <div>
+            <label class="block text-xs text-gray-500 mb-1">Nombres</label>
+            <input type="text" name="nombres" required
+                   class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-500 mb-1">Apellidos</label>
+            <input type="text" name="apellidos" required
+                   class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-500 mb-1">RUT</label>
+            <input type="text" name="rut" placeholder="XX.XXX.XXX-X"
+                   class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-500 mb-1">Rol</label>
+            <select name="rol" required
+                    class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate"
+                    onchange="var el=this.parentElement.querySelector('input[name=rolOtro]');if(el)el.style.display=this.value==='Otro'?'block':'none'">
+                <option value="">Seleccione</option>
+                <option value="Padrino">Padrino</option>
+                <option value="Madrina">Madrina</option>
+                <option value="Testigo">Testigo</option>
+                <option value="Otro">Otro...</option>
+            </select>
+            <input type="text" name="rolOtro" placeholder="Especifique rol"
+                   style="display:none"
+                   class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate mt-1">
+        </div>
+        <div class="col-span-2 md:col-span-4 flex justify-end mt-2">
+            <button type="submit" class="bg-cuero text-white px-6 py-1.5 rounded-lg hover:bg-cuero-light transition text-sm">+ Agregar Padrino</button>
+        </div>
+    </form>
+</div>
