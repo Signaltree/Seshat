@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.seshat.util.ValidacionUtil.validarRut;
+import org.seshat.util.ValidacionUtil;
 
 @Service
 public class PadrinoService {
@@ -32,12 +32,13 @@ public class PadrinoService {
         if (nombres == null || nombres.isBlank()) errores.put("nombres", "El nombre es obligatorio");
         if (apellidos == null || apellidos.isBlank()) errores.put("apellidos", "Los apellidos son obligatorios");
         if (rol == null || rol.isBlank()) errores.put("rol", "El rol es obligatorio");
-        if (rut != null && !rut.isBlank() && !validarRut(rut)) {
+        if (rut != null) rut = rut.trim();
+        if (rut != null && !rut.isBlank() && !ValidacionUtil.validarRut(rut)) {
             errores.put("rut", "RUT inválido");
         }
         if (!errores.isEmpty()) return errores;
 
-        Padrino p = new Padrino(0, nombres.trim(), apellidos.trim(), rut != null ? rut.trim() : null);
+        Padrino p = new Padrino(0, nombres.trim(), apellidos.trim(), rut);
         int padrinoId = repo.save(p);
 
         switch (tipo) {
