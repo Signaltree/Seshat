@@ -49,6 +49,12 @@
         </div>
     </form>
     <div th:if="${bautizo.id != 0}"
+         th:attr="hx-get=@{/padrinos/fragmento/BAUTIZO/{id}(id=${bautizo.id})}"
+         hx-trigger="load"
+         hx-target="this"
+         hx-swap="outerHTML">
+    </div>
+    <div th:if="${bautizo.id != 0}"
          th:attr="hx-get=@{/certificados/fragmento/BAUTIZO/{id}(id=${bautizo.id}, personaId=${bautizo.persona_id})}"
          hx-trigger="load"
          hx-target="this"
