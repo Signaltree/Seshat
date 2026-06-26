@@ -1,0 +1,37 @@
+<div class="fotos-section col-span-2 mt-6 border-t pt-4" th:fragment="fotos" xmlns:th="http://www.thymeleaf.org">
+    <h3 class="text-lg font-bold text-granate mb-3">Fotos</h3>
+    <div th:if="${error}" class="bg-red-100 text-red-700 px-3 py-2 rounded-lg mb-3" th:text="${error}"></div>
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mb-4">
+        <div th:each="foto : ${fotos}" class="relative group">
+            <a th:href="@{/fotos/{id}/archivo(id=${foto.id})}" target="_blank">
+                <img th:src="@{/fotos/{id}/archivo(id=${foto.id})}"
+                     class="w-full h-32 object-cover rounded-lg shadow-sm hover:shadow-md transition"
+                     th:alt="${foto.descripcion} ?: 'Foto'">
+            </a>
+            <div th:if="${foto.descripcion}" class="text-xs text-gray-500 mt-1 truncate" th:text="${foto.descripcion}"></div>
+            <button th:attr="hx-delete=@{/fotos/{id}(id=${foto.id}, personaId=${personaId})}"
+                    hx-target="closest .fotos-section" hx-swap="outerHTML"
+                    hx-confirm="¿Eliminar esta foto?"
+                    class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 text-xs opacity-0 group-hover:opacity-100 transition flex items-center justify-center">✕</button>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(fotos)}" class="text-gray-400 text-sm italic mb-4">Sin fotos</div>
+    <form hx-post="/fotos/subir" hx-target="closest .fotos-section" hx-swap="outerHTML"
+          enctype="multipart/form-data" class="flex items-end gap-3 flex-wrap">
+        <input type="hidden" name="personaId" th:value="${personaId}">
+        <div>
+            <label class="block text-xs text-gray-500 mb-1">Descripción</label>
+            <input type="text" name="descripcion" class="border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-500 mb-1">Fecha de la foto</label>
+            <input type="date" name="fechaFoto" class="border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-granate">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-500 mb-1">Archivo</label>
+            <input type="file" name="archivo" accept=".jpg,.jpeg,.png,.gif" required
+                   class="text-sm text-gray-600 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:bg-cuero file:text-white hover:file:bg-cuero-light">
+        </div>
+        <button type="submit" class="bg-granate text-white px-4 py-1.5 rounded-lg hover:bg-granate-light transition text-sm">Subir</button>
+    </form>
+</div>

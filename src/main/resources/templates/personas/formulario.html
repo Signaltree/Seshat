@@ -3,6 +3,11 @@
     <h2 class="text-2xl font-bold text-granate mb-6" th:unless="${persona.id == 0}">Editar Persona</h2>
     <form hx-post="/personas/guardar" hx-target="#main-content" class="grid grid-cols-2 gap-4">
         <input type="hidden" name="id" th:value="${persona.id}">
+        <div th:if="${errores != null}" class="col-span-2 bg-red-100 text-red-700 px-4 py-2 rounded-lg">
+            <ul class="list-disc list-inside">
+                <li th:each="err : ${errores}" th:text="${err.value}"></li>
+            </ul>
+        </div>
         <div class="col-span-2 sm:col-span-1">
             <label class="block text-gray-700 font-medium mb-1">Nombres</label>
             <input type="text" name="nombres" th:value="${persona.nombres}" required
@@ -16,7 +21,8 @@
         <div>
             <label class="block text-gray-700 font-medium mb-1">RUT</label>
             <input type="text" name="rut" th:value="${persona.rut}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
+                   th:classappend="${errores != null && errores.containsKey('rut') ? 'border-red-500' : 'border-gray-300'}">
         </div>
         <div>
             <label class="block text-gray-700 font-medium mb-1">Fecha Nacimiento</label>
@@ -26,12 +32,14 @@
         <div>
             <label class="block text-gray-700 font-medium mb-1">Teléfono</label>
             <input type="text" name="telefono" th:value="${persona.telefono}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
+                   th:classappend="${errores != null && errores.containsKey('telefono') ? 'border-red-500' : 'border-gray-300'}">
         </div>
         <div>
             <label class="block text-gray-700 font-medium mb-1">Email</label>
             <input type="email" name="email" th:value="${persona.email}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
+                   th:classappend="${errores != null && errores.containsKey('email') ? 'border-red-500' : 'border-gray-300'}">
         </div>
         <div class="col-span-2">
             <label class="block text-gray-700 font-medium mb-1">Dirección</label>
@@ -48,4 +56,10 @@
             </a>
         </div>
     </form>
+    <div th:if="${persona.id != 0}"
+         th:attr="hx-get=@{/fotos/fragmento/{id}(id=${persona.id})}"
+         hx-trigger="load"
+         hx-target="this"
+         hx-swap="outerHTML">
+    </div>
 </div>
