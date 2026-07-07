@@ -3,6 +3,8 @@ package org.seshat.controller;
 import org.seshat.model.Certificado;
 import org.seshat.service.CertificadoService;
 import org.seshat.service.FileStorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequestMapping("/certificados")
 public class CertificadoController {
 
+    private static final Logger log = LoggerFactory.getLogger(CertificadoController.class);
     private final CertificadoService service;
     private final FileStorageService fileStorage;
 
@@ -36,7 +39,8 @@ public class CertificadoController {
         try {
             service.guardar(personaId, tipo, entidadId, archivo);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al subir archivo: " + e.getMessage());
+            log.error("Error al subir certificado: personaId={}, tipo={}, entidadId={}", personaId, tipo, entidadId, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
         List<Certificado> certificados = service.listarPorEntidad(tipo, entidadId);
         model.addAttribute("certificados", certificados);
@@ -81,7 +85,8 @@ public class CertificadoController {
         try {
             service.eliminar(id);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al eliminar archivo: " + e.getMessage());
+            log.error("Error al eliminar certificado: id={}, personaId={}, tipo={}, entidadId={}", id, personaId, tipo, entidadId, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
         List<Certificado> certificados = service.listarPorEntidad(tipo, entidadId);
         model.addAttribute("certificados", certificados);

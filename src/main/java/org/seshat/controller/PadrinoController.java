@@ -2,6 +2,8 @@ package org.seshat.controller;
 
 import org.seshat.model.Padrino;
 import org.seshat.service.PadrinoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/padrinos")
 public class PadrinoController {
+    private static final Logger log = LoggerFactory.getLogger(PadrinoController.class);
     private final PadrinoService padrinoService;
 
     public PadrinoController(PadrinoService padrinoService) {
@@ -45,7 +48,8 @@ public class PadrinoController {
             Map<String, String> errores = padrinoService.agregar(tipo, entidadId, nombres, apellidos, rut, rolFinal);
             model.addAttribute("erroresPadrino", errores);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al agregar padrino: " + e.getMessage());
+            log.error("Error al agregar padrino: tipo={}, entidadId={}", tipo, entidadId, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
 
         List<Padrino> padrinos = padrinoService.listarPorSacramento(tipo, entidadId);
@@ -65,7 +69,8 @@ public class PadrinoController {
         try {
             padrinoService.eliminar(tipo, id, sacramentoId);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al eliminar: " + e.getMessage());
+            log.error("Error al eliminar padrino: id={}, tipo={}, sacramentoId={}", id, tipo, sacramentoId, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
 
         List<Padrino> padrinos = padrinoService.listarPorSacramento(tipo, sacramentoId);

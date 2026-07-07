@@ -3,6 +3,8 @@ package org.seshat.controller;
 import org.seshat.model.Matrimonio;
 import org.seshat.service.MatrimonioService;
 import org.seshat.service.PersonaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/matrimonios")
 public class MatrimonioController {
+    private static final Logger log = LoggerFactory.getLogger(MatrimonioController.class);
     private final MatrimonioService service;
     private final PersonaService personaService;
 
@@ -34,8 +37,16 @@ public class MatrimonioController {
 
     @PostMapping("/guardar")
     public String guardar(@RequestParam(defaultValue = "0") int id, Matrimonio m, Model model) {
-        if (id > 0) { m.setId(id); service.actualizar(m); }
-        else service.guardar(m);
+        try {
+            if (id > 0) { m.setId(id); service.actualizar(m); }
+            else service.guardar(m);
+        } catch (Exception e) {
+            log.error("Error al guardar matrimonio: id={}", id, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
+            model.addAttribute("matrimonio", m);
+            model.addAttribute("personas", personaService.listar());
+            return "matrimonios/formulario";
+        }
         model.addAttribute("matrimonios", service.listar());
         return "matrimonios/listar";
     }
@@ -52,7 +63,11 @@ public class MatrimonioController {
         try {
             service.eliminar(id);
         } catch (DataIntegrityViolationException e) {
+            log.error("Error al eliminar matrimonio: id={}, violación de integridad", id, e);
             model.addAttribute("error", "No se puede eliminar: el matrimonio tiene registros asociados.");
+        } catch (Exception e) {
+            log.error("Error al eliminar matrimonio: id={}", id, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
         model.addAttribute("matrimonios", service.listar());
         return "matrimonios/listar";

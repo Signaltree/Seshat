@@ -3,6 +3,8 @@ package org.seshat.controller;
 import org.seshat.model.Bautizo;
 import org.seshat.service.BautizoService;
 import org.seshat.service.PersonaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/bautizos")
 public class BautizoController {
+    private static final Logger log = LoggerFactory.getLogger(BautizoController.class);
     private final BautizoService service;
     private final PersonaService personaService;
 
@@ -34,8 +37,16 @@ public class BautizoController {
 
     @PostMapping("/guardar")
     public String guardar(@RequestParam(defaultValue = "0") int id, Bautizo b, Model model) {
-        if (id > 0) { b.setId(id); service.actualizar(b); }
-        else service.guardar(b);
+        try {
+            if (id > 0) { b.setId(id); service.actualizar(b); }
+            else service.guardar(b);
+        } catch (Exception e) {
+            log.error("Error al guardar bautizo: id={}", id, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
+            model.addAttribute("bautizo", b);
+            model.addAttribute("personas", personaService.listar());
+            return "bautizos/formulario";
+        }
         model.addAttribute("bautizos", service.listar());
         return "bautizos/listar";
     }
@@ -52,7 +63,11 @@ public class BautizoController {
         try {
             service.eliminar(id);
         } catch (DataIntegrityViolationException e) {
+            log.error("Error al eliminar bautizo: id={}, violación de integridad", id, e);
             model.addAttribute("error", "No se puede eliminar: el bautizo tiene registros asociados.");
+        } catch (Exception e) {
+            log.error("Error al eliminar bautizo: id={}", id, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
         model.addAttribute("bautizos", service.listar());
         return "bautizos/listar";

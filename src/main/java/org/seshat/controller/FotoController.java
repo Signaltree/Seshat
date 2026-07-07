@@ -2,6 +2,8 @@ package org.seshat.controller;
 
 import org.seshat.model.Foto;
 import org.seshat.service.FotoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("/fotos")
 public class FotoController {
 
+    private static final Logger log = LoggerFactory.getLogger(FotoController.class);
     private final FotoService service;
 
     public FotoController(FotoService service) { this.service = service; }
@@ -36,7 +39,8 @@ public class FotoController {
         try {
             service.guardar(personaId, descripcion, fecha, archivo);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al subir foto: " + e.getMessage());
+            log.error("Error al subir foto: personaId={}", personaId, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
         List<Foto> fotos = service.listarPorPersona(personaId);
         model.addAttribute("fotos", fotos);
@@ -72,7 +76,8 @@ public class FotoController {
         try {
             service.eliminar(id);
         } catch (Exception e) {
-            model.addAttribute("error", "Error al eliminar foto: " + e.getMessage());
+            log.error("Error al eliminar foto: id={}, personaId={}", id, personaId, e);
+            model.addAttribute("error", "Ocurrió un error al procesar la solicitud");
         }
         List<Foto> fotos = service.listarPorPersona(personaId);
         model.addAttribute("fotos", fotos);
