@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -16,7 +18,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
@@ -35,15 +36,21 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // ponytail: single admin user. Password encoded with BCrypt.
-        // Change password in production by editing this or using env variable.
         String user = System.getenv("ADMIN_USER") != null ? System.getenv("ADMIN_USER") : "admin";
-        String pass = System.getenv("ADMIN_PASS") != null ? System.getenv("ADMIN_PASS") : "admin123";
+        String pass = System.getenv("ADMIN_PASS");
+        if (pass == null || pass.isBlank()) {
+            throw new IllegalStateException("ADMIN_PASS environment variable is required");
+        }
         return new InMemoryUserDetailsManager(
             User.withUsername(user)
-                .password("{noop}" + pass)
+                .password(encoder().encode(pass))
                 .roles("ADMIN")
                 .build()
         );
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 }
