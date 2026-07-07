@@ -11,7 +11,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <script>
         document.body.addEventListener('htmx:configRequest', function(evt) {
-            evt.detail.headers['X-CSRF-TOKEN'] = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            evt.detail.headers[document.querySelector('meta[name="_csrf_header"]').content] = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         });
     </script>
     <script>
