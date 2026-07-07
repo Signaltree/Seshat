@@ -37,7 +37,7 @@ public class RateLimitingFilter implements Filter {
                 val.count.incrementAndGet();
                 return val;
             });
-            if (entry.count.get() > MAX_ATTEMPTS) {
+            if (entry.count.get() >= MAX_ATTEMPTS) {
                 resp.setStatus(429);
                 resp.setContentType("text/plain");
                 resp.getWriter().write("Demasiados intentos. Intente nuevamente en 1 minuto.");

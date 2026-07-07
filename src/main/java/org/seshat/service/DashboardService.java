@@ -6,19 +6,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import static java.util.Map.entry;
 
 @Service
 public class DashboardService {
 
-    private static final Map<String, String> QUERIES = Map.of(
-        "BAUTIZO:fecha_bautizo", "SELECT COUNT(*) FROM BAUTIZO WHERE EXTRACT(YEAR FROM fecha_bautizo) = ?",
-        "BAUTIZO:fecha_bautizo:mes", "SELECT COUNT(*) FROM BAUTIZO WHERE EXTRACT(YEAR FROM fecha_bautizo) = ? AND EXTRACT(MONTH FROM fecha_bautizo) = ?",
-        "CONFIRMACION:fecha_confirmacion", "SELECT COUNT(*) FROM CONFIRMACION WHERE EXTRACT(YEAR FROM fecha_confirmacion) = ?",
-        "CONFIRMACION:fecha_confirmacion:mes", "SELECT COUNT(*) FROM CONFIRMACION WHERE EXTRACT(YEAR FROM fecha_confirmacion) = ? AND EXTRACT(MONTH FROM fecha_confirmacion) = ?",
-        "MATRIMONIO:fecha_matrimonio", "SELECT COUNT(*) FROM MATRIMONIO WHERE EXTRACT(YEAR FROM fecha_matrimonio) = ?",
-        "MATRIMONIO:fecha_matrimonio:mes", "SELECT COUNT(*) FROM MATRIMONIO WHERE EXTRACT(YEAR FROM fecha_matrimonio) = ? AND EXTRACT(MONTH FROM fecha_matrimonio) = ?",
-        "PERSONA:fecha_registro", "SELECT COUNT(*) FROM PERSONA WHERE EXTRACT(YEAR FROM fecha_registro) = ?",
-        "PERSONA:fecha_registro:mes", "SELECT COUNT(*) FROM PERSONA WHERE EXTRACT(YEAR FROM fecha_registro) = ? AND EXTRACT(MONTH FROM fecha_registro) = ?"
+    private static final Map<String, String> QUERIES = Map.ofEntries(
+        entry("BAUTIZO:fecha_bautizo", "SELECT COUNT(*) FROM BAUTIZO"),
+        entry("BAUTIZO:fecha_bautizo:anio", "SELECT COUNT(*) FROM BAUTIZO WHERE EXTRACT(YEAR FROM fecha_bautizo) = ?"),
+        entry("BAUTIZO:fecha_bautizo:mes", "SELECT COUNT(*) FROM BAUTIZO WHERE EXTRACT(YEAR FROM fecha_bautizo) = ? AND EXTRACT(MONTH FROM fecha_bautizo) = ?"),
+        entry("CONFIRMACION:fecha_confirmacion", "SELECT COUNT(*) FROM CONFIRMACION"),
+        entry("CONFIRMACION:fecha_confirmacion:anio", "SELECT COUNT(*) FROM CONFIRMACION WHERE EXTRACT(YEAR FROM fecha_confirmacion) = ?"),
+        entry("CONFIRMACION:fecha_confirmacion:mes", "SELECT COUNT(*) FROM CONFIRMACION WHERE EXTRACT(YEAR FROM fecha_confirmacion) = ? AND EXTRACT(MONTH FROM fecha_confirmacion) = ?"),
+        entry("MATRIMONIO:fecha_matrimonio", "SELECT COUNT(*) FROM MATRIMONIO"),
+        entry("MATRIMONIO:fecha_matrimonio:anio", "SELECT COUNT(*) FROM MATRIMONIO WHERE EXTRACT(YEAR FROM fecha_matrimonio) = ?"),
+        entry("MATRIMONIO:fecha_matrimonio:mes", "SELECT COUNT(*) FROM MATRIMONIO WHERE EXTRACT(YEAR FROM fecha_matrimonio) = ? AND EXTRACT(MONTH FROM fecha_matrimonio) = ?"),
+        entry("PERSONA:fecha_registro", "SELECT COUNT(*) FROM PERSONA"),
+        entry("PERSONA:fecha_registro:anio", "SELECT COUNT(*) FROM PERSONA WHERE EXTRACT(YEAR FROM fecha_registro) = ?"),
+        entry("PERSONA:fecha_registro:mes", "SELECT COUNT(*) FROM PERSONA WHERE EXTRACT(YEAR FROM fecha_registro) = ? AND EXTRACT(MONTH FROM fecha_registro) = ?")
     );
 
     private final JdbcTemplate jdbc;
@@ -37,12 +42,15 @@ public class DashboardService {
         return s;
     }
 
-    private int contar(String tabla, String columna, int anio, Integer mes) {
-        String key = tabla + ":" + columna + (mes != null ? ":mes" : "");
+    private int contar(String tabla, String columna, Integer anio, Integer mes) {
+        String key = tabla + ":" + columna;
+        if (anio != null && mes != null) key += ":mes";
+        else if (anio != null) key += ":anio";
         String sql = QUERIES.get(key);
         if (sql == null) throw new IllegalArgumentException("Combinación inválida: " + key);
-        if (mes != null) return jdbc.queryForObject(sql, Integer.class, anio, mes);
-        return jdbc.queryForObject(sql, Integer.class, anio);
+        if (anio != null && mes != null) return jdbc.queryForObject(sql, Integer.class, anio, mes);
+        if (anio != null) return jdbc.queryForObject(sql, Integer.class, anio);
+        return jdbc.queryForObject(sql, Integer.class);
     }
 
     private List<Map<String, Object>> obtenerResumenAnual() {
