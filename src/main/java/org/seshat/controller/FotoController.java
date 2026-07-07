@@ -65,6 +65,7 @@ public class FotoController {
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
+                    .header("X-Content-Type-Options", "nosniff")
                     .body(r);
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.notFound().build();

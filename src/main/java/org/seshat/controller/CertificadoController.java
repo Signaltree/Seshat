@@ -71,7 +71,8 @@ public class CertificadoController {
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION,
-                            "inline; filename*=UTF-8''" + filename)
+                            "attachment; filename*=UTF-8''" + filename)
+                    .header("X-Content-Type-Options", "nosniff")
                     .body(r);
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.notFound().build();

@@ -7,15 +7,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class FileStorageService {
+
+    private static final Map<String, String> MAGIC_BYTES = Map.of(
+        "89504e47", "image/png",
+        "ffd8ffe0", "image/jpeg",
+        "ffd8ffe1", "image/jpeg",
+        "ffd8ffe2", "image/jpeg",
+        "25504446", "application/pdf",
+        "47494638", "image/gif"
+    );
 
     private final Path uploadDir;
 
@@ -31,6 +42,7 @@ public class FileStorageService {
 
     public String guardar(MultipartFile archivo, String subdirectorio) {
         if (archivo.isEmpty()) throw new RuntimeException("Archivo vacío");
+        validarMagicBytes(archivo);
         String extension = "";
         String original = archivo.getOriginalFilename();
         if (original != null && original.contains("."))
@@ -44,6 +56,23 @@ public class FileStorageService {
             return subdirectorio + "/" + nombre;
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el archivo", e);
+        }
+    }
+
+    private void validarMagicBytes(MultipartFile archivo) {
+        try (InputStream is = archivo.getInputStream()) {
+            byte[] header = new byte[4];
+            int read = is.read(header);
+            if (read < 4) throw new SecurityException("Archivo demasiado pequeño");
+            StringBuilder hex = new StringBuilder();
+            for (int i = 0; i < 4; i++) hex.append(String.format("%02x", header[i]));
+            if (!MAGIC_BYTES.containsKey(hex.toString())) {
+                throw new SecurityException("Tipo de archivo no permitido. Solo PDF, JPEG, PNG y GIF");
+            }
+        } catch (SecurityException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer archivo", e);
         }
     }
 
