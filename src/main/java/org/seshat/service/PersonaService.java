@@ -30,6 +30,18 @@ public class PersonaService {
             errores.put("email", "Email inválido");
         if (p.getTelefono() != null && !p.getTelefono().isBlank() && !ValidacionUtil.validarTelefono(p.getTelefono()))
             errores.put("telefono", "Teléfono inválido (use formato: +56 9 XXXX XXXX)");
+        if (p.getNombres() != null && p.getNombres().length() > 100)
+            errores.put("nombres", "El nombre no puede exceder 100 caracteres");
+        if (p.getApellidos() != null && p.getApellidos().length() > 100)
+            errores.put("apellidos", "Los apellidos no pueden exceder 100 caracteres");
+        if (p.getRut() != null && p.getRut().length() > 20)
+            errores.put("rut", "El RUT no puede exceder 20 caracteres");
+        if (p.getDireccion() != null && p.getDireccion().length() > 255)
+            errores.put("direccion", "La dirección no puede exceder 255 caracteres");
+        if (p.getTelefono() != null && p.getTelefono().length() > 20)
+            errores.put("telefono", "El teléfono no puede exceder 20 caracteres");
+        if (p.getEmail() != null && p.getEmail().length() > 100)
+            errores.put("email", "El email no puede exceder 100 caracteres");
         return errores;
     }
 

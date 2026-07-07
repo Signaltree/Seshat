@@ -6,13 +6,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class DashboardService {
 
-    private static final Set<String> TABLAS = Set.of("PERSONA", "BAUTIZO", "CONFIRMACION", "MATRIMONIO");
-    private static final Set<String> COLUMNAS = Set.of("fecha_registro", "fecha_bautizo", "fecha_confirmacion", "fecha_matrimonio");
+    private static final Map<String, String> QUERIES = Map.of(
+        "BAUTIZO:fecha_bautizo", "SELECT COUNT(*) FROM BAUTIZO WHERE EXTRACT(YEAR FROM fecha_bautizo) = ?",
+        "BAUTIZO:fecha_bautizo:mes", "SELECT COUNT(*) FROM BAUTIZO WHERE EXTRACT(YEAR FROM fecha_bautizo) = ? AND EXTRACT(MONTH FROM fecha_bautizo) = ?",
+        "CONFIRMACION:fecha_confirmacion", "SELECT COUNT(*) FROM CONFIRMACION WHERE EXTRACT(YEAR FROM fecha_confirmacion) = ?",
+        "CONFIRMACION:fecha_confirmacion:mes", "SELECT COUNT(*) FROM CONFIRMACION WHERE EXTRACT(YEAR FROM fecha_confirmacion) = ? AND EXTRACT(MONTH FROM fecha_confirmacion) = ?",
+        "MATRIMONIO:fecha_matrimonio", "SELECT COUNT(*) FROM MATRIMONIO WHERE EXTRACT(YEAR FROM fecha_matrimonio) = ?",
+        "MATRIMONIO:fecha_matrimonio:mes", "SELECT COUNT(*) FROM MATRIMONIO WHERE EXTRACT(YEAR FROM fecha_matrimonio) = ? AND EXTRACT(MONTH FROM fecha_matrimonio) = ?",
+        "PERSONA:fecha_registro", "SELECT COUNT(*) FROM PERSONA WHERE EXTRACT(YEAR FROM fecha_registro) = ?",
+        "PERSONA:fecha_registro:mes", "SELECT COUNT(*) FROM PERSONA WHERE EXTRACT(YEAR FROM fecha_registro) = ? AND EXTRACT(MONTH FROM fecha_registro) = ?"
+    );
 
     private final JdbcTemplate jdbc;
 
@@ -30,18 +37,12 @@ public class DashboardService {
         return s;
     }
 
-    private long contar(String tabla, String columna, Integer anio, Integer mes) {
-        if (!TABLAS.contains(tabla) || !COLUMNAS.contains(columna))
-            throw new IllegalArgumentException("Tabla o columna inválida: " + tabla + "/" + columna);
-        if (anio == null && mes == null) return jdbc.queryForObject("SELECT COUNT(*) FROM " + tabla, Long.class);
-        if (anio == null) return jdbc.queryForObject(
-            "SELECT COUNT(*) FROM " + tabla + " WHERE EXTRACT(MONTH FROM " + columna + ") = ?",
-            Long.class, mes);
-        if (mes == null) return jdbc.queryForObject(
-            "SELECT COUNT(*) FROM " + tabla + " WHERE EXTRACT(YEAR FROM " + columna + ") = ?", Long.class, anio);
-        return jdbc.queryForObject(
-            "SELECT COUNT(*) FROM " + tabla + " WHERE EXTRACT(YEAR FROM " + columna + ") = ? AND EXTRACT(MONTH FROM " + columna + ") = ?",
-            Long.class, anio, mes);
+    private int contar(String tabla, String columna, int anio, Integer mes) {
+        String key = tabla + ":" + columna + (mes != null ? ":mes" : "");
+        String sql = QUERIES.get(key);
+        if (sql == null) throw new IllegalArgumentException("Combinación inválida: " + key);
+        if (mes != null) return jdbc.queryForObject(sql, Integer.class, anio, mes);
+        return jdbc.queryForObject(sql, Integer.class, anio);
     }
 
     private List<Map<String, Object>> obtenerResumenAnual() {
