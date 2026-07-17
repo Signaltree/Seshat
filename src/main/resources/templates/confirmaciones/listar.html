@@ -1,39 +1,64 @@
-<div class="bg-white rounded-xl shadow-md p-6" th:fragment="listar">
-    <div th:if="${error}" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg mb-4" th:text="${error}"></div>
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-granate">Confirmaciones</h2>
-        <a href="/confirmaciones/nuevo" hx-get="/confirmaciones/nuevo" hx-target="#main-content"
-           class="bg-cuero text-white px-6 py-2 rounded-lg hover:bg-cuero-light transition text-lg">
-            + Nueva Confirmación
-        </a>
+<div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/60 card" th:fragment="listar">
+    <div th:if="${error}" class="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl mb-4 text-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">error</span>
+        <span th:text="${error}"></span>
+    </div>
+    <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+        <h2 class="text-xl font-serif font-bold text-slate-800">Confirmaciones</h2>
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                <input type="text" name="q" placeholder="Buscar..."
+                       hx-get="/confirmaciones" hx-target="#main-content" hx-trigger="keyup changed delay:300ms, search"
+                       hx-indicator="#spinner-confirmaciones"
+                       th:value="${q}"
+                       class="w-48 lg:w-56 border border-slate-300 rounded-xl pl-10 pr-8 py-2 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
+                <span id="spinner-confirmaciones" class="htmx-indicator absolute right-3 top-1/2 -translate-y-1/2">
+                    <span class="material-symbols-outlined text-base text-emerald-500 animate-spin">progress_activity</span>
+                </span>
+            </div>
+            <a href="/confirmaciones/nuevo" hx-get="/confirmaciones/nuevo" hx-target="#main-content" hx-indicator="#spinner-confirmaciones"
+               class="btn flex items-center gap-1.5 bg-emerald-600 text-white font-medium px-5 py-2 rounded-xl hover:bg-emerald-500 transition-all text-sm shadow-sm hover:shadow-md hover:shadow-emerald-500/20">
+                <span class="material-symbols-outlined text-lg">add</span>
+                Nueva Confirmación
+            </a>
+        </div>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full text-left">
             <thead>
-                <tr class="border-b-2 border-gray-200 text-gray-600">
-                    <th class="py-3 px-4">ID</th>
-                    <th class="py-3 px-4">Persona ID</th>
-                    <th class="py-3 px-4">Fecha</th>
-                    <th class="py-3 px-4">Guía</th>
-                    <th class="py-3 px-4">Libro</th>
-                    <th class="py-3 px-4">Acciones</th>
+                <tr class="text-xs text-slate-500 uppercase tracking-wider">
+                    <th class="py-3 px-4 font-medium">ID</th>
+                    <th class="py-3 px-4 font-medium">Persona</th>
+                    <th class="py-3 px-4 font-medium">Fecha</th>
+                    <th class="py-3 px-4 font-medium">Guía</th>
+                    <th class="py-3 px-4 font-medium">Libro</th>
+                    <th class="py-3 px-4 font-medium">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="c : ${confirmaciones}" class="border-b border-gray-100 hover:bg-gray-50">
-                    <td class="py-3 px-4" th:text="${c.id}">1</td>
-                    <td class="py-3 px-4" th:text="${c.persona_id}">1</td>
-                    <td class="py-3 px-4" th:text="${c.fecha_confirmacion}">2024-06-01</td>
-                    <td class="py-3 px-4" th:text="${c.guia}">Padre Juan</td>
-                    <td class="py-3 px-4" th:text="${c.n_libro} + '/' + ${c.n_folio}">1/5</td>
-                    <td class="py-3 px-4 flex gap-2">
-                        <a th:href="@{'/confirmaciones/' + ${c.id} + '/editar'}"
-                           hx-get="@{'/confirmaciones/' + ${c.id} + '/editar'}" hx-target="#main-content"
-                           class="text-granate hover:text-granate-light underline">Editar</a>
-                        <form hx-post="@{'/confirmaciones/eliminar/' + ${c.id}}" hx-target="#main-content"
-                              onsubmit="return confirm('¿Eliminar esta confirmación?')" class="inline">
-                            <button type="submit" class="text-red-600 hover:text-red-800 underline ml-2 cursor-pointer">Eliminar</button>
-                        </form>
+                <tr th:each="c : ${confirmaciones}" class="border-t border-slate-100 transition-all duration-150 hover:bg-slate-50">
+                    <td class="py-3 px-4 text-sm text-slate-400" th:text="${c.id}">1</td>
+                    <td class="py-3 px-4 text-sm text-slate-800 font-medium" th:text="${c.nombrePersona}">Juan Pérez</td>
+                    <td class="py-3 px-4 text-sm text-slate-800" th:text="${c.fecha_confirmacion}">2024-06-01</td>
+                    <td class="py-3 px-4 text-sm text-slate-500" th:text="${c.guia}">Padre Juan</td>
+                    <td class="py-3 px-4 text-sm text-slate-500" th:text="${c.n_libro} + '/' + ${c.n_folio}">1/5</td>
+                    <td class="py-3 px-4">
+                        <div class="flex items-center gap-3">
+                            <a th:href="@{'/confirmaciones/' + ${c.id} + '/editar'}"
+                               th:attr="hx-get=@{'/confirmaciones/' + ${c.id} + '/editar'}" hx-target="#main-content"
+                               class="btn flex items-center gap-1 text-sm text-slate-500 hover:text-emerald-600 transition-all duration-200">
+                                <span class="material-symbols-outlined text-base">edit</span>
+                                Editar
+                            </a>
+                            <form th:attr="hx-post=@{'/confirmaciones/eliminar/' + ${c.id}}" hx-target="#main-content"
+                                  hx-confirm="¿Estás seguro de eliminar esta confirmación? Se eliminarán también los registros asociados." class="inline">
+                                <button type="submit" class="btn flex items-center gap-1 text-sm text-slate-500 hover:text-red-600 transition-all duration-200 cursor-pointer">
+                                    <span class="material-symbols-outlined text-base">delete</span>
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             </tbody>

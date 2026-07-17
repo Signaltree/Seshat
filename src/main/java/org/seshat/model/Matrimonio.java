@@ -13,12 +13,15 @@ public class Matrimonio {
     private String n_folio;
     private String parroquia;
     private String ruta_imagen;
+    private String nombrePersona1;
+    private String nombrePersona2;
 
     public Matrimonio() {}
 
     public Matrimonio(int id, int persona1_id, int persona2_id, String sacerdote,
                       LocalDate fecha_matrimonio, String direccion, String n_libro,
-                      String n_folio, String parroquia, String ruta_imagen) {
+                      String n_folio, String parroquia, String ruta_imagen,
+                      String nombrePersona1, String nombrePersona2) {
         this.id = id;
         this.persona1_id = persona1_id;
         this.persona2_id = persona2_id;
@@ -29,6 +32,8 @@ public class Matrimonio {
         this.n_folio = n_folio;
         this.parroquia = parroquia;
         this.ruta_imagen = ruta_imagen;
+        this.nombrePersona1 = nombrePersona1;
+        this.nombrePersona2 = nombrePersona2;
     }
 
     public int getId() { return id; }
@@ -51,4 +56,8 @@ public class Matrimonio {
     public void setParroquia(String parroquia) { this.parroquia = parroquia; }
     public String getRuta_imagen() { return ruta_imagen; }
     public void setRuta_imagen(String ruta_imagen) { this.ruta_imagen = ruta_imagen; }
+    public String getNombrePersona1() { return nombrePersona1; }
+    public void setNombrePersona1(String nombrePersona1) { this.nombrePersona1 = nombrePersona1; }
+    public String getNombrePersona2() { return nombrePersona2; }
+    public void setNombrePersona2(String nombrePersona2) { this.nombrePersona2 = nombrePersona2; }
 }

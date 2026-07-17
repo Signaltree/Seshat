@@ -1,19 +1,19 @@
 <div th:fragment="dashboard" class="max-w-5xl mx-auto">
-    <h2 class="text-2xl font-bold text-granate mb-6">Dashboard</h2>
+    <h2 class="text-2xl font-serif font-bold text-slate-800 mb-6">Dashboard</h2>
 
     <!-- Filtros -->
-    <form class="flex gap-4 mb-6 items-end" hx-get="/dashboard" hx-target="#main-content"
+    <form class="flex gap-4 mb-8 items-end" hx-get="/dashboard" hx-target="#main-content" hx-indicator="#spinner-dashboard"
           hx-trigger="change from:[name='anio'], change from:[name='mes']">
         <div>
-            <label class="block text-gray-700 text-sm font-medium mb-1">Año</label>
-            <select name="anio" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+            <label class="block text-slate-600 text-sm font-medium mb-1">Año</label>
+            <select name="anio" class="border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800">
                 <option value="">Todos</option>
                 <option th:each="a : ${anios}" th:value="${a}" th:text="${a}" th:selected="${a == anio}"></option>
             </select>
         </div>
         <div>
-            <label class="block text-gray-700 text-sm font-medium mb-1">Mes</label>
-            <select name="mes" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+            <label class="block text-slate-600 text-sm font-medium mb-1">Mes</label>
+            <select name="mes" class="border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800">
                 <option value="">Todos</option>
                 <option value="1" th:selected="${mes == 1}">Enero</option>
                 <option value="2" th:selected="${mes == 2}">Febrero</option>
@@ -29,58 +29,109 @@
                 <option value="12" th:selected="${mes == 12}">Diciembre</option>
             </select>
         </div>
+        <span id="spinner-dashboard" class="htmx-indicator material-symbols-outlined text-2xl text-emerald-500 animate-spin">progress_activity</span>
     </form>
 
-    <!-- Tarjetas -->
+    <!-- Tarjetas de estadísticas -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <p class="text-4xl font-bold text-granate" th:text="${stats.totalPersonas}">0</p>
-            <p class="text-gray-600 mt-1">Personas</p>
+        <div class="bg-white rounded-2xl p-5 flex items-center gap-4 shadow-sm border border-slate-200/60 card stat-card">
+            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-2xl text-emerald-600">group</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-800" th:text="${stats.totalPersonas}">0</p>
+                <p class="text-xs text-slate-500">Personas</p>
+            </div>
         </div>
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <p class="text-4xl font-bold text-cuero" th:text="${stats.totalBautizos}">0</p>
-            <p class="text-gray-600 mt-1">Bautizos</p>
+        <div class="bg-white rounded-2xl p-5 flex items-center gap-4 shadow-sm border border-slate-200/60 card stat-card">
+            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-2xl text-emerald-600">water_drop</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-800" th:text="${stats.totalBautizos}">0</p>
+                <p class="text-xs text-slate-500">Bautizos</p>
+            </div>
         </div>
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <p class="text-4xl font-bold text-dorado" th:text="${stats.totalConfirmaciones}">0</p>
-            <p class="text-gray-600 mt-1">Confirmaciones</p>
+        <div class="bg-white rounded-2xl p-5 flex items-center gap-4 shadow-sm border border-slate-200/60 card stat-card">
+            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-2xl text-emerald-600">spa</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-800" th:text="${stats.totalConfirmaciones}">0</p>
+                <p class="text-xs text-slate-500">Confirmaciones</p>
+            </div>
         </div>
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <p class="text-4xl font-bold text-granate-dark" th:text="${stats.totalMatrimonios}">0</p>
-            <p class="text-gray-600 mt-1">Matrimonios</p>
+        <div class="bg-white rounded-2xl p-5 flex items-center gap-4 shadow-sm border border-slate-200/60 card stat-card">
+            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-2xl text-emerald-600">favorite</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-800" th:text="${stats.totalMatrimonios}">0</p>
+                <p class="text-xs text-slate-500">Matrimonios</p>
+            </div>
         </div>
     </div>
 
-    <!-- Gráfico -->
-    <div class="bg-white rounded-xl shadow-md p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">Evolución Anual</h3>
-        <canvas id="chart" height="100"></canvas>
+    <!-- Gráfico de tendencia mensual -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/60 card">
+        <h3 class="text-lg font-serif font-semibold text-slate-800 mb-4">Tendencia del año</h3>
+        <canvas id="trendChart" height="280"></canvas>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script>
-        var datos = [[${stats.resumenAnual}]];
-        if (!datos || datos.length === 0) { datos = []; }
-        var el = document.getElementById('chart');
-        if (!el || typeof Chart === 'undefined') {
-            if (el && el.parentElement) el.parentElement.innerHTML = '<p class="text-gray-400 text-center py-4">Gráfico no disponible</p>';
-            return;
-        }
-        if (window._chart) window._chart.destroy();
-        window._chart = new Chart(el.getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: datos.length ? datos.map(function(r) { return r.anio; }) : [],
-                datasets: [
-                    { label: 'Bautizos', data: datos.length ? datos.map(function(r) { return r.bautizos; }) : [], backgroundColor: '#8B4513' },
-                    { label: 'Confirmaciones', data: datos.length ? datos.map(function(r) { return r.confirmaciones; }) : [], backgroundColor: '#C9A84C' },
-                    { label: 'Matrimonios', data: datos.length ? datos.map(function(r) { return r.matrimonios; }) : [], backgroundColor: '#5B2C3E' }
+        (function() {
+            var meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+            var data = {
+                bautizos: [
+                    /*[+*/th:each="m : ${stats.tendenciaMensual}"/*]+*/
+                    /*[+*/th:utext="${m.bautizos}"/*]+*/0/*[-*/,
+                ],
+                confirmaciones: [
+                    /*[+*/th:each="m : ${stats.tendenciaMensual}"/*]+*/
+                    /*[+*/th:utext="${m.confirmaciones}"/*]+*/0/*[-*/,
+                ],
+                matrimonios: [
+                    /*[+*/th:each="m : ${stats.tendenciaMensual}"/*]+*/
+                    /*[+*/th:utext="${m.matrimonios}"/*]+*/0/*[-*/,
                 ]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'top' } },
-                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-            }
-        });
+            };
+            var ctx = document.getElementById('trendChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Bautizos',
+                        data: data.bautizos,
+                        borderColor: '#059669',
+                        backgroundColor: '#d1fae5',
+                        fill: true,
+                        tension: 0.3
+                    },{
+                        label: 'Confirmaciones',
+                        data: data.confirmaciones,
+                        borderColor: '#f59e0b',
+                        backgroundColor: '#fef3c7',
+                        fill: true,
+                        tension: 0.3
+                    },{
+                        label: 'Matrimonios',
+                        data: data.matrimonios,
+                        borderColor: '#64748b',
+                        backgroundColor: '#e2e8f0',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+        })();
     </script>
 </div>

@@ -11,11 +11,12 @@ public class Confirmacion {
     private String n_folio;
     private String parroquia;
     private String ruta_imagen;
+    private String nombrePersona;
 
     public Confirmacion() {}
 
     public Confirmacion(int id, int persona_id, LocalDate fecha_confirmacion, String guia,
-                        String n_libro, String n_folio, String parroquia, String ruta_imagen) {
+                        String n_libro, String n_folio, String parroquia, String ruta_imagen, String nombrePersona) {
         this.id = id;
         this.persona_id = persona_id;
         this.fecha_confirmacion = fecha_confirmacion;
@@ -24,6 +25,7 @@ public class Confirmacion {
         this.n_folio = n_folio;
         this.parroquia = parroquia;
         this.ruta_imagen = ruta_imagen;
+        this.nombrePersona = nombrePersona;
     }
 
     public int getId() { return id; }
@@ -42,4 +44,6 @@ public class Confirmacion {
     public void setParroquia(String parroquia) { this.parroquia = parroquia; }
     public String getRuta_imagen() { return ruta_imagen; }
     public void setRuta_imagen(String ruta_imagen) { this.ruta_imagen = ruta_imagen; }
+    public String getNombrePersona() { return nombrePersona; }
+    public void setNombrePersona(String nombrePersona) { this.nombrePersona = nombrePersona; }
 }

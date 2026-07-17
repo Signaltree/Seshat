@@ -48,8 +48,8 @@ public class CertificadoService {
 
     public void eliminar(int id) {
         Certificado c = repo.findById(id);
-        fileStorage.eliminar(c.getRutaArchivo());
         repo.delete(id);
+        fileStorage.eliminar(c.getRutaArchivo());
     }
 
     public Resource cargarComoResource(int id) {

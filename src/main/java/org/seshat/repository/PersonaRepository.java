@@ -67,4 +67,10 @@ public class PersonaRepository {
     public void delete(int id) {
         jdbc.update("DELETE FROM PERSONA WHERE id=?", id);
     }
+
+    public List<Persona> findByQuery(String q) {
+        String like = "%" + q + "%";
+        return jdbc.query("SELECT * FROM PERSONA WHERE nombres ILIKE ? OR apellidos ILIKE ? OR rut ILIKE ? ORDER BY apellidos, nombres",
+                mapper, like, like, like);
+    }
 }

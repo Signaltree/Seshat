@@ -1,0 +1,49 @@
+- generic [ref=f10e2]:
+  - generic [ref=f10e3]:
+    - heading "Personas" [level=2] [ref=f10e4]
+    - generic [ref=f10e5]:
+      - generic [ref=f10e6]:
+        - text: search
+        - textbox "Buscar por nombre o RUT..." [ref=f10e7]
+        - generic [ref=f10e8]: progress_activity
+      - link "add Nueva Persona" [ref=f10e9] [cursor=pointer]:
+        - /url: /personas/nuevo
+  - table [ref=f10e11]:
+    - rowgroup [ref=f10e12]:
+      - row [ref=f10e13]:
+        - columnheader "RUT" [ref=f10e14]
+        - columnheader "Nombres" [ref=f10e15]
+        - columnheader "Apellidos" [ref=f10e16]
+        - columnheader "Teléfono" [ref=f10e17]
+        - columnheader "Acciones" [ref=f10e18]
+    - rowgroup [ref=f10e19]:
+      - row [ref=f10e20]:
+        - cell [ref=f10e21]
+        - cell "Juan" [ref=f10e22]
+        - cell "Pérez" [ref=f10e23]
+        - cell [ref=f10e24]
+        - cell [ref=f10e25]:
+          - generic [ref=f10e26]:
+            - link "edit Editar" [ref=f10e27] [cursor=pointer]:
+              - /url: /personas/16/editar
+            - button "delete Eliminar" [ref=f10e29]
+      - row [ref=f10e30]:
+        - cell "11.111.111-1" [ref=f10e31]
+        - cell "Test" [ref=f10e32]
+        - cell "Persona" [ref=f10e33]
+        - cell [ref=f10e34]
+        - cell [ref=f10e35]:
+          - generic [ref=f10e36]:
+            - link "edit Editar" [ref=f10e37] [cursor=pointer]:
+              - /url: /personas/13/editar
+            - button "delete Eliminar" [ref=f10e39]
+      - row [ref=f10e40]:
+        - cell "177777777" [ref=f10e41]
+        - cell "Alejandro prueba" [ref=f10e42]
+        - cell "prueba prueba" [ref=f10e43]
+        - cell "56964362078" [ref=f10e44]
+        - cell [ref=f10e45]:
+          - generic [ref=f10e46]:
+            - link "edit Editar" [ref=f10e47] [cursor=pointer]:
+              - /url: /personas/1/editar
+            - button "delete Eliminar" [ref=f10e49]

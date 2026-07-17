@@ -4,6 +4,7 @@ import org.seshat.model.Bautizo;
 import org.seshat.repository.BautizoRepository;
 import org.seshat.repository.PadrinoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,9 +19,11 @@ public class BautizoService {
     }
 
     public List<Bautizo> listar() { return repo.findAll(); }
+    public List<Bautizo> buscar(String q) { return repo.findByQuery(q); }
     public Bautizo obtenerPorId(int id) { return repo.findById(id); }
     public int guardar(Bautizo b) { return repo.save(b); }
     public void actualizar(Bautizo b) { repo.update(b); }
+    @Transactional
     public void eliminar(int id) {
         padrinoRepo.eliminarBautizoPadrinosPorBautizo(id);
         repo.delete(id);

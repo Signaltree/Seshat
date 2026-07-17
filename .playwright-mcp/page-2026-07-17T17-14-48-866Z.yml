@@ -1,0 +1,36 @@
+- generic [active] [ref=f7e1]:
+  - complementary [ref=f7e2]:
+    - generic [ref=f7e3]:
+      - heading "Seshat" [level=1] [ref=f7e4]
+      - paragraph [ref=f7e5]: Parroquia María Misionera
+    - navigation [ref=f7e6]:
+      - link "monitoring Dashboard" [ref=f7e7] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=f7e8]: monitoring
+        - generic [ref=f7e9]: Dashboard
+      - link "group Personas" [ref=f7e10] [cursor=pointer]:
+        - /url: /personas
+        - generic [ref=f7e11]: group
+        - generic [ref=f7e12]: Personas
+      - link "water_drop Bautizos" [ref=f7e13] [cursor=pointer]:
+        - /url: /bautizos
+        - generic [ref=f7e14]: water_drop
+        - generic [ref=f7e15]: Bautizos
+      - link "spa Confirmaciones" [ref=f7e16] [cursor=pointer]:
+        - /url: /confirmaciones
+        - generic [ref=f7e17]: spa
+        - generic [ref=f7e18]: Confirmaciones
+      - link "favorite Matrimonios" [ref=f7e19] [cursor=pointer]:
+        - /url: /matrimonios
+        - generic [ref=f7e20]: favorite
+        - generic [ref=f7e21]: Matrimonios
+    - generic [ref=f7e22]:
+      - paragraph [ref=f7e23]: "Usuario: admin"
+      - button "logout Cerrar Sesión" [ref=f7e25] [cursor=pointer]:
+        - generic [ref=f7e26]: logout
+        - text: Cerrar Sesión
+  - main [ref=f7e27]:
+    - generic [ref=f7e29]:
+      - generic [ref=f7e30]: church
+      - paragraph [ref=f7e32]: Bienvenido a Seshat
+      - paragraph [ref=f7e33]: Seleccione una opción del menú

@@ -4,27 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error — Seshat</title>
-    <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="/cdn/tailwind.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        granate: { DEFAULT: '#5B2C3E', light: '#7A3F55', dark: '#3D1D2A' },
-                        cuero: { DEFAULT: '#8B4513', light: '#A0522D' },
-                        dorado: '#C9A84C',
-                        crema: '#F5F0EB'
+                        slate: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a' },
+                        emerald: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 900: '#064e3b' },
+                    },
+                    fontFamily: {
+                        serif: ['Noto Serif', 'Georgia', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-crema min-h-screen flex items-center justify-center">
-    <div class="bg-white rounded-xl shadow-md p-8 w-full max-w-md text-center">
-        <h1 class="text-3xl font-bold text-granate mb-4">Error</h1>
-        <p class="text-gray-600 mb-6" th:text="${error}">Ocurrió un error al procesar la solicitud</p>
-        <a href="/" class="text-granate hover:underline">Volver al inicio</a>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center font-sans antialiased">
+    <div class="bg-white rounded-2xl p-8 w-full max-w-sm mx-4 text-center shadow-lg border border-white/50 anime-fade">
+        <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-3xl text-red-500">error_outline</span>
+        </div>
+        <h1 class="text-2xl font-serif font-bold text-slate-800 mb-2">Error</h1>
+        <p class="text-slate-600 text-sm mb-6" th:text="${error}">Ocurrió un error al procesar la solicitud</p>
+        <a href="/" class="btn inline-flex items-center gap-1.5 bg-emerald-600 text-white font-medium px-5 py-2.5 rounded-xl hover:bg-emerald-500 transition-all text-sm shadow-sm hover:shadow-md hover:shadow-emerald-500/20">
+            <span class="material-symbols-outlined text-lg">home</span>
+            Volver al inicio
+        </a>
     </div>
 </body>
 </html>

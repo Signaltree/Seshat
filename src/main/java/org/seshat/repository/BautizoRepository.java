@@ -28,15 +28,16 @@ public class BautizoRepository {
             rs.getString("n_libro"),
             rs.getString("n_folio"),
             rs.getString("parroquia"),
-            rs.getString("ruta_imagen")
+            rs.getString("ruta_imagen"),
+            rs.getString("nombre_persona")
     );
 
     public List<Bautizo> findAll() {
-        return jdbc.query("SELECT * FROM BAUTIZO ORDER BY fecha_bautizo DESC", mapper);
+        return jdbc.query("SELECT b.*, p.nombres || ' ' || p.apellidos AS nombre_persona FROM BAUTIZO b JOIN PERSONA p ON b.persona_id = p.id ORDER BY b.fecha_bautizo DESC", mapper);
     }
 
     public Bautizo findById(int id) {
-        return jdbc.queryForObject("SELECT * FROM BAUTIZO WHERE id = ?", mapper, id);
+        return jdbc.queryForObject("SELECT b.*, p.nombres || ' ' || p.apellidos AS nombre_persona FROM BAUTIZO b JOIN PERSONA p ON b.persona_id = p.id WHERE b.id = ?", mapper, id);
     }
 
     public int save(Bautizo b) {
@@ -66,5 +67,11 @@ public class BautizoRepository {
 
     public void delete(int id) {
         jdbc.update("DELETE FROM BAUTIZO WHERE id=?", id);
+    }
+
+    public List<Bautizo> findByQuery(String q) {
+        String like = "%" + q + "%";
+        return jdbc.query("SELECT b.*, p.nombres || ' ' || p.apellidos AS nombre_persona FROM BAUTIZO b JOIN PERSONA p ON b.persona_id = p.id WHERE p.nombres ILIKE ? OR p.apellidos ILIKE ? ORDER BY b.fecha_bautizo DESC",
+                mapper, like, like);
     }
 }

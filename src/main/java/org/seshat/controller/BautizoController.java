@@ -23,8 +23,9 @@ public class BautizoController {
     }
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("bautizos", service.listar());
+    public String listar(@RequestParam(required = false) String q, Model model) {
+        model.addAttribute("bautizos", q != null && !q.isBlank() ? service.buscar(q) : service.listar());
+        model.addAttribute("q", q);
         return "bautizos/listar";
     }
 

@@ -1,22 +1,32 @@
-<div class="certificados-section col-span-2 mt-6 border-t pt-4" th:fragment="certificados" xmlns:th="http://www.thymeleaf.org">
-    <h3 class="text-lg font-bold text-granate mb-3">Certificados</h3>
-    <div th:if="${error}" class="bg-red-100 text-red-700 px-3 py-2 rounded-lg mb-3" th:text="${error}"></div>
+<div class="certificados-section col-span-2 mt-6 border-t border-slate-200 pt-6" th:fragment="certificados" xmlns:th="http://www.thymeleaf.org">
+    <h3 class="text-lg font-serif font-bold text-slate-800 mb-3">Certificados</h3>
+    <div th:if="${error}" class="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-xl mb-3 text-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">error</span>
+        <span th:text="${error}"></span>
+    </div>
     <div class="space-y-2 mb-4">
-        <div th:each="cert : ${certificados}" class="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg">
+        <div th:each="cert : ${certificados}" class="flex items-center justify-between bg-slate-50 px-3 py-2.5 rounded-xl">
             <div class="flex items-center gap-2">
-                <span class="text-gray-700 text-sm" th:text="${cert.nombreOriginal}"></span>
-                <span class="text-gray-400 text-xs" th:text="${cert.fechaSubida}"></span>
+                <span class="material-symbols-outlined text-lg text-slate-400">description</span>
+                <span class="text-sm text-slate-800" th:text="${cert.nombreOriginal}"></span>
+                <span class="text-xs text-slate-500" th:text="${cert.fechaSubida}"></span>
             </div>
-            <div class="flex gap-2">
+            <div class="flex items-center gap-2">
                 <a th:href="@{/certificados/{id}/archivo(id=${cert.id})}" target="_blank"
-                   class="text-blue-600 hover:text-blue-800 text-sm">Ver</a>
+                   class="btn flex items-center gap-1 text-sm text-slate-500 hover:text-emerald-600 transition-all duration-200">
+                    <span class="material-symbols-outlined text-base">visibility</span>
+                    Ver
+                </a>
                 <button th:attr="hx-delete=@{/certificados/{id}(id=${cert.id}, tipo=${tipo}, entidadId=${entidadId}, personaId=${personaId})}"
                         hx-target="closest .certificados-section" hx-swap="outerHTML"
                         hx-confirm="¿Eliminar este certificado?"
-                        class="text-red-600 hover:text-red-800 text-sm">Eliminar</button>
+                        class="btn flex items-center gap-1 text-sm text-slate-500 hover:text-red-600 transition-all duration-200 cursor-pointer">
+                    <span class="material-symbols-outlined text-base">delete</span>
+                    Eliminar
+                </button>
             </div>
         </div>
-        <div th:if="${#lists.isEmpty(certificados)}" class="text-gray-400 text-sm italic">Sin certificados</div>
+        <div th:if="${#lists.isEmpty(certificados)}" class="text-slate-400 text-sm italic">Sin certificados</div>
     </div>
     <form hx-post="/certificados/subir" hx-target="closest .certificados-section" hx-swap="outerHTML"
           enctype="multipart/form-data" class="flex items-end gap-3 flex-wrap">
@@ -24,10 +34,13 @@
         <input type="hidden" name="tipo" th:value="${tipo}">
         <input type="hidden" name="entidadId" th:value="${entidadId}">
         <div>
-            <label class="block text-xs text-gray-500 mb-1">Subir certificado (PDF/imagen)</label>
+            <label class="block text-xs text-slate-500 mb-1">Subir certificado (PDF/imagen)</label>
             <input type="file" name="archivo" accept=".pdf,.jpg,.jpeg,.png" required
-                   class="text-sm text-gray-600 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:bg-cuero file:text-white hover:file:bg-cuero-light">
+                   class="text-sm text-slate-700 file:mr-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:bg-emerald-600 file:text-white file:font-medium hover:file:bg-emerald-500 file:cursor-pointer file:transition-colors">
         </div>
-        <button type="submit" class="bg-granate text-white px-4 py-1.5 rounded-lg hover:bg-granate-light transition text-sm">Subir</button>
+        <button type="submit" class="btn flex items-center gap-1 bg-slate-800 text-white font-medium px-4 py-1.5 rounded-xl hover:bg-slate-700 transition-all text-sm shadow-sm cursor-pointer">
+            <span class="material-symbols-outlined text-base">upload</span>
+            Subir
+        </button>
     </form>
 </div>

@@ -35,6 +35,42 @@ No test framework configured (JUnit not in `pom.xml`). No tests exist yet.
 - Chilean phone format validation (+56 9 XXXX XXXX)
 - All in `org.seshat.util.ValidacionUtil`
 
+## Skills Discovery (vercel-labs/skills ecosystem)
+
+Use `npx skills` CLI to discover, evaluate, and install agent skills.
+
+### How to use
+
+```sh
+npx skills find <query>             # search skills by keyword
+npx skills find <query> --owner <owner>  # scope to a GitHub owner
+npx skills add <owner/repo@skill> -g -y  # install globally (copies SKILL.md)
+npx skills list -g                  # list installed global skills
+npx skills update                   # update all installed skills
+```
+
+### When to use
+
+- User says "find a skill for X" or "can you do X"
+- User asks "how do I do X" where X might be a common task
+- Before implementing a complex feature (check if a skill exists first)
+- To extend agent capabilities for specific domains
+
+### Installed skills (from this ecosystem)
+
+| Skill | Install | Purpose |
+|-------|---------|---------|
+| `find-skills` | 2.5M | Meta-skill: discover & install other skills |
+| `java-springboot` | 18K | Java/Spring Boot development patterns |
+| `postgresql-code-review` | 11.2K | PostgreSQL schema & query review |
+| `documentation-and-adrs` | 13.1K | Documentation & ADR writing |
+
+### Verification before recommending
+
+1. Check install count (prefer 1K+, cautious under 100)
+2. Check source reputation (vercel-labs, anthropics, github trusted)
+3. Check skills.sh page before suggesting installation
+
 ## Architecture
 
 ```

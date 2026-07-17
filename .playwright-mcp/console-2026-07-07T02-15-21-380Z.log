@@ -1,0 +1,10 @@
+[      15ms] [ERROR] Access to script at 'https://cdn.tailwindcss.com/' from origin 'http://localhost:8080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:8080/login:0
+[      15ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://cdn.tailwindcss.com/:0
+[      17ms] ReferenceError: tailwind is not defined
+    at http://localhost:8080/login:9:9
+[      17ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:8080/login:0
+[    4155ms] [ERROR] Access to script at 'https://cdn.tailwindcss.com/' from origin 'http://localhost:8080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:8080/login?error:0
+[    4155ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://cdn.tailwindcss.com/:0
+[    4155ms] ReferenceError: tailwind is not defined
+    at http://localhost:8080/login?error:9:9
+[    4157ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:8080/login?error:0

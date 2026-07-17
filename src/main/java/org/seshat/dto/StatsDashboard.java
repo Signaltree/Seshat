@@ -9,6 +9,7 @@ public class StatsDashboard {
     private long totalConfirmaciones;
     private long totalMatrimonios;
     private List<Map<String, Object>> resumenAnual;
+    private List<Map<String, Object>> tendenciaMensual;
 
     public StatsDashboard() {}
 
@@ -22,4 +23,6 @@ public class StatsDashboard {
     public void setTotalMatrimonios(long v) { totalMatrimonios = v; }
     public List<Map<String, Object>> getResumenAnual() { return resumenAnual; }
     public void setResumenAnual(List<Map<String, Object>> v) { resumenAnual = v; }
+    public List<Map<String, Object>> getTendenciaMensual() { return tendenciaMensual; }
+    public void setTendenciaMensual(List<Map<String, Object>> v) { tendenciaMensual = v; }
 }

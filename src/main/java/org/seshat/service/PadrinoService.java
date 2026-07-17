@@ -3,6 +3,7 @@ package org.seshat.service;
 import org.seshat.model.Padrino;
 import org.seshat.repository.PadrinoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ public class PadrinoService {
         };
     }
 
+    @Transactional
     public Map<String, String> agregar(String tipo, int entidadId, String nombres, String apellidos, String rut, String rol) {
         Map<String, String> errores = new HashMap<>();
         if (nombres == null || nombres.isBlank()) errores.put("nombres", "El nombre es obligatorio");
@@ -49,6 +51,7 @@ public class PadrinoService {
         return errores;
     }
 
+    @Transactional
     public void eliminar(String tipo, int padrinoId, int sacramentoId) {
         switch (tipo) {
             case "BAUTIZO" -> repo.eliminarBautizoPadrino(padrinoId, sacramentoId);

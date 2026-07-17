@@ -1,0 +1,11 @@
+- generic [ref=f4e2]:
+  - heading "Seshat" [level=1] [ref=f4e3]
+  - paragraph [ref=f4e4]: Parroquia María Misionera
+  - generic [ref=f4e5]:
+    - generic [ref=f4e6]:
+      - text: Usuario
+      - textbox [active] [ref=f4e7]
+    - generic [ref=f4e8]:
+      - text: Contraseña
+      - textbox [ref=f4e9]
+    - button "Ingresar" [ref=f4e10]

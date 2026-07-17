@@ -27,15 +27,16 @@ public class ConfirmacionRepository {
             rs.getString("n_libro"),
             rs.getString("n_folio"),
             rs.getString("parroquia"),
-            rs.getString("ruta_imagen")
+            rs.getString("ruta_imagen"),
+            rs.getString("nombre_persona")
     );
 
     public List<Confirmacion> findAll() {
-        return jdbc.query("SELECT * FROM CONFIRMACION ORDER BY fecha_confirmacion DESC", mapper);
+        return jdbc.query("SELECT c.*, p.nombres || ' ' || p.apellidos AS nombre_persona FROM CONFIRMACION c JOIN PERSONA p ON c.persona_id = p.id ORDER BY c.fecha_confirmacion DESC", mapper);
     }
 
     public Confirmacion findById(int id) {
-        return jdbc.queryForObject("SELECT * FROM CONFIRMACION WHERE id = ?", mapper, id);
+        return jdbc.queryForObject("SELECT c.*, p.nombres || ' ' || p.apellidos AS nombre_persona FROM CONFIRMACION c JOIN PERSONA p ON c.persona_id = p.id WHERE c.id = ?", mapper, id);
     }
 
     public int save(Confirmacion c) {
@@ -64,5 +65,11 @@ public class ConfirmacionRepository {
 
     public void delete(int id) {
         jdbc.update("DELETE FROM CONFIRMACION WHERE id=?", id);
+    }
+
+    public List<Confirmacion> findByQuery(String q) {
+        String like = "%" + q + "%";
+        return jdbc.query("SELECT c.*, p.nombres || ' ' || p.apellidos AS nombre_persona FROM CONFIRMACION c JOIN PERSONA p ON c.persona_id = p.id WHERE p.nombres ILIKE ? OR p.apellidos ILIKE ? ORDER BY c.fecha_confirmacion DESC",
+                mapper, like, like);
     }
 }

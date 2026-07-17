@@ -18,8 +18,9 @@ public class PersonaController {
     public PersonaController(PersonaService service) { this.service = service; }
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("personas", service.listar());
+    public String listar(@RequestParam(required = false) String q, Model model) {
+        model.addAttribute("personas", q != null && !q.isBlank() ? service.buscar(q) : service.listar());
+        model.addAttribute("q", q);
         return "personas/listar";
     }
 

@@ -1,60 +1,65 @@
-<div class="bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto" th:fragment="formulario">
-    <h2 class="text-2xl font-bold text-granate mb-6" th:if="${matrimonio.id == 0}">Nuevo Matrimonio</h2>
-    <h2 class="text-2xl font-bold text-granate mb-6" th:unless="${matrimonio.id == 0}">Editar Matrimonio</h2>
+<div class="bg-white rounded-2xl p-6 max-w-2xl mx-auto shadow-sm border border-slate-200/60 card" th:fragment="formulario">
+    <h2 class="text-xl font-serif font-bold text-slate-800 mb-6" th:if="${matrimonio.id == 0}">Nuevo Matrimonio</h2>
+    <h2 class="text-xl font-serif font-bold text-slate-800 mb-6" th:unless="${matrimonio.id == 0}">Editar Matrimonio</h2>
     <form hx-post="/matrimonios/guardar" hx-target="#main-content" class="grid grid-cols-2 gap-4">
         <input type="hidden" name="id" th:value="${matrimonio.id}">
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Contrayente 1</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Contrayente 1</label>
             <select name="persona1_id" required
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
-                <option value="">Seleccione</option>
+                    class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800">
+                <option value="" class="text-slate-400">Seleccione</option>
                 <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombres} + ' ' + ${p.apellidos}"
                         th:selected="${matrimonio.persona1_id == p.id}"></option>
             </select>
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Contrayente 2</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Contrayente 2</label>
             <select name="persona2_id" required
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
-                <option value="">Seleccione</option>
+                    class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800">
+                <option value="" class="text-slate-400">Seleccione</option>
                 <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombres} + ' ' + ${p.apellidos}"
                         th:selected="${matrimonio.persona2_id == p.id}"></option>
             </select>
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Fecha Matrimonio</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Fecha Matrimonio</label>
             <input type="date" name="fecha_matrimonio" th:value="${matrimonio.fecha_matrimonio}" required
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Sacerdote</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Sacerdote</label>
             <input type="text" name="sacerdote" th:value="${matrimonio.sacerdote}" required
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Parroquia</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Parroquia</label>
             <input type="text" name="parroquia" th:value="${matrimonio.parroquia}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">N° Libro</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">N° Libro</label>
             <input type="text" name="n_libro" th:value="${matrimonio.n_libro}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">N° Folio</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">N° Folio</label>
             <input type="text" name="n_folio" th:value="${matrimonio.n_folio}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Dirección (lugar)</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Dirección (lugar)</label>
             <input type="text" name="direccion" th:value="${matrimonio.direccion}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
-        <div class="col-span-2 flex gap-4 mt-4">
-            <button type="submit" class="bg-cuero text-white px-8 py-2 rounded-lg hover:bg-cuero-light transition text-lg">Guardar</button>
+        <div class="col-span-2 flex gap-3 mt-4">
+            <button type="submit" class="btn flex items-center gap-1.5 bg-emerald-600 text-white font-medium px-6 py-2.5 rounded-xl hover:bg-emerald-500 transition-all text-sm shadow-sm hover:shadow-md hover:shadow-emerald-500/20">
+                <span class="material-symbols-outlined text-lg">save</span>
+                Guardar
+            </button>
             <a href="/matrimonios" hx-get="/matrimonios" hx-target="#main-content"
-               class="bg-gray-300 text-gray-700 px-8 py-2 rounded-lg hover:bg-gray-400 transition text-lg text-center">Cancelar</a>
+               class="btn flex items-center gap-1.5 bg-transparent border border-slate-300 text-slate-700 px-6 py-2.5 rounded-xl hover:bg-slate-100 transition-all text-sm">
+                Cancelar
+            </a>
         </div>
     </form>
     <div th:if="${matrimonio.id != 0}"

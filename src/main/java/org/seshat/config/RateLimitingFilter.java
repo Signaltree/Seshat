@@ -3,6 +3,8 @@ package org.seshat.config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RateLimitingFilter implements Filter {
 
+    private static final Logger log = LoggerFactory.getLogger(RateLimitingFilter.class);
     private final Map<String, RateLimitEntry> attempts = new ConcurrentHashMap<>();
     private static final int MAX_ATTEMPTS = 5;
     private static final long WINDOW_MS = 60_000;
@@ -38,7 +41,9 @@ public class RateLimitingFilter implements Filter {
                 return val;
             });
             if (entry.count.get() >= MAX_ATTEMPTS) {
+                log.warn("Rate limit hit for IP: {}", ip);
                 resp.setStatus(429);
+                resp.setHeader("Retry-After", "60");
                 resp.setContentType("text/plain");
                 resp.getWriter().write("Demasiados intentos. Intente nuevamente en 1 minuto.");
                 return;

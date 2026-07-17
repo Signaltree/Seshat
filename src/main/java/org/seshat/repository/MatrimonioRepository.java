@@ -29,15 +29,17 @@ public class MatrimonioRepository {
             rs.getString("n_libro"),
             rs.getString("n_folio"),
             rs.getString("parroquia"),
-            rs.getString("ruta_imagen")
+            rs.getString("ruta_imagen"),
+            rs.getString("nombre_persona1"),
+            rs.getString("nombre_persona2")
     );
 
     public List<Matrimonio> findAll() {
-        return jdbc.query("SELECT * FROM MATRIMONIO ORDER BY fecha_matrimonio DESC", mapper);
+        return jdbc.query("SELECT m.*, p1.nombres || ' ' || p1.apellidos AS nombre_persona1, p2.nombres || ' ' || p2.apellidos AS nombre_persona2 FROM MATRIMONIO m JOIN PERSONA p1 ON m.persona1_id = p1.id JOIN PERSONA p2 ON m.persona2_id = p2.id ORDER BY m.fecha_matrimonio DESC", mapper);
     }
 
     public Matrimonio findById(int id) {
-        return jdbc.queryForObject("SELECT * FROM MATRIMONIO WHERE id = ?", mapper, id);
+        return jdbc.queryForObject("SELECT m.*, p1.nombres || ' ' || p1.apellidos AS nombre_persona1, p2.nombres || ' ' || p2.apellidos AS nombre_persona2 FROM MATRIMONIO m JOIN PERSONA p1 ON m.persona1_id = p1.id JOIN PERSONA p2 ON m.persona2_id = p2.id WHERE m.id = ?", mapper, id);
     }
 
     public int save(Matrimonio m) {
@@ -68,5 +70,11 @@ public class MatrimonioRepository {
 
     public void delete(int id) {
         jdbc.update("DELETE FROM MATRIMONIO WHERE id=?", id);
+    }
+
+    public List<Matrimonio> findByQuery(String q) {
+        String like = "%" + q + "%";
+        return jdbc.query("SELECT m.*, p1.nombres || ' ' || p1.apellidos AS nombre_persona1, p2.nombres || ' ' || p2.apellidos AS nombre_persona2 FROM MATRIMONIO m JOIN PERSONA p1 ON m.persona1_id = p1.id JOIN PERSONA p2 ON m.persona2_id = p2.id WHERE p1.nombres ILIKE ? OR p1.apellidos ILIKE ? OR p2.nombres ILIKE ? OR p2.apellidos ILIKE ? ORDER BY m.fecha_matrimonio DESC",
+                mapper, like, like, like, like);
     }
 }

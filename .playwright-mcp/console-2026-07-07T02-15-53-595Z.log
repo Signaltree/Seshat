@@ -1,0 +1,40 @@
+[      11ms] [ERROR] Access to script at 'https://cdn.tailwindcss.com/' from origin 'http://localhost:8080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:8080/login:0
+[      11ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://cdn.tailwindcss.com/:0
+[      14ms] ReferenceError: tailwind is not defined
+    at http://localhost:8080/login:9:9
+[      13ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:8080/login:0
+[    6272ms] [ERROR] Access to script at 'https://cdn.tailwindcss.com/' from origin 'http://localhost:8080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:8080/login?error:0
+[    6272ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://cdn.tailwindcss.com/:0
+[    6274ms] ReferenceError: tailwind is not defined
+    at http://localhost:8080/login?error:9:9
+[    6274ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:8080/login?error:0
+[   19073ms] [ERROR] Access to script at 'https://cdn.tailwindcss.com/' from origin 'http://localhost:8080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:8080/?continue:0
+[   19073ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://cdn.tailwindcss.com/:0
+[   19144ms] TypeError: Cannot read properties of null (reading 'addEventListener')
+    at http://localhost:8080/?continue:13:23
+[   19144ms] ReferenceError: tailwind is not defined
+    at http://localhost:8080/?continue:18:9
+[   23381ms] SyntaxError: Failed to execute 'insertBefore' on 'Node': Invalid shorthand property initializer
+    at At (https://unpkg.com/htmx.org@1.9.12:1:23203)
+    at https://unpkg.com/htmx.org@1.9.12:1:23365
+    at oe (https://unpkg.com/htmx.org@1.9.12:1:4866)
+    at Nt (https://unpkg.com/htmx.org@1.9.12:1:23336)
+    at https://unpkg.com/htmx.org@1.9.12:1:10571
+    at https://unpkg.com/htmx.org@1.9.12:1:45087
+    at oe (https://unpkg.com/htmx.org@1.9.12:1:4866)
+    at s (https://unpkg.com/htmx.org@1.9.12:1:45062)
+[   28713ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ http://localhost:8080/@%7B'/personas/eliminar/'%20+%20$%7Bp.id%7D%7D:0
+[   28714ms] [ERROR] Response Status Error Code 403 from @{'/personas/eliminar/' + ${p.id}} @ https://unpkg.com/htmx.org@1.9.12:0
+[   30316ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ http://localhost:8080/@%7B'/personas/eliminar/'%20+%20$%7Bp.id%7D%7D:0
+[   30317ms] [ERROR] Response Status Error Code 403 from @{'/personas/eliminar/' + ${p.id}} @ https://unpkg.com/htmx.org@1.9.12:0
+[   31973ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ http://localhost:8080/@%7B'/personas/eliminar/'%20+%20$%7Bp.id%7D%7D:0
+[   31974ms] [ERROR] Response Status Error Code 403 from @{'/personas/eliminar/' + ${p.id}} @ https://unpkg.com/htmx.org@1.9.12:0
+[   37119ms] SyntaxError: Failed to execute 'insertBefore' on 'Node': Invalid shorthand property initializer
+    at At (https://unpkg.com/htmx.org@1.9.12:1:23203)
+    at https://unpkg.com/htmx.org@1.9.12:1:23365
+    at oe (https://unpkg.com/htmx.org@1.9.12:1:4866)
+    at Nt (https://unpkg.com/htmx.org@1.9.12:1:23336)
+    at https://unpkg.com/htmx.org@1.9.12:1:10571
+    at https://unpkg.com/htmx.org@1.9.12:1:45087
+    at oe (https://unpkg.com/htmx.org@1.9.12:1:4866)
+    at s (https://unpkg.com/htmx.org@1.9.12:1:45062)

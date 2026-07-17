@@ -23,8 +23,9 @@ public class ConfirmacionController {
     }
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("confirmaciones", service.listar());
+    public String listar(@RequestParam(required = false) String q, Model model) {
+        model.addAttribute("confirmaciones", q != null && !q.isBlank() ? service.buscar(q) : service.listar());
+        model.addAttribute("q", q);
         return "confirmaciones/listar";
     }
 

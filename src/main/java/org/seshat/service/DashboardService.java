@@ -39,6 +39,7 @@ public class DashboardService {
         s.setTotalConfirmaciones(contar("CONFIRMACION", "fecha_confirmacion", anio, mes));
         s.setTotalMatrimonios(contar("MATRIMONIO", "fecha_matrimonio", anio, mes));
         s.setResumenAnual(obtenerResumenAnual());
+        s.setTendenciaMensual(obtenerTendenciaMensual());
         return s;
     }
 
@@ -64,6 +65,22 @@ public class DashboardService {
             FULL JOIN (SELECT EXTRACT(YEAR FROM fecha_confirmacion)::int as anio, COUNT(*) as total FROM CONFIRMACION GROUP BY anio) c ON b.anio = c.anio
             FULL JOIN (SELECT EXTRACT(YEAR FROM fecha_matrimonio)::int as anio, COUNT(*) as total FROM MATRIMONIO GROUP BY anio) m ON COALESCE(b.anio, c.anio) = m.anio
             ORDER BY anio
+            """);
+    }
+
+    private List<Map<String, Object>> obtenerTendenciaMensual() {
+        return jdbc.queryForList("""
+            WITH meses AS (SELECT generate_series(1, 12) AS mes)
+            SELECT
+                m.mes,
+                COALESCE(b.total, 0) AS bautizos,
+                COALESCE(c.total, 0) AS confirmaciones,
+                COALESCE(mr.total, 0) AS matrimonios
+            FROM meses m
+            LEFT JOIN (SELECT EXTRACT(MONTH FROM fecha_bautizo)::int AS mes, COUNT(*) AS total FROM BAUTIZO WHERE EXTRACT(YEAR FROM fecha_bautizo) = EXTRACT(YEAR FROM CURRENT_DATE) GROUP BY mes) b ON m.mes = b.mes
+            LEFT JOIN (SELECT EXTRACT(MONTH FROM fecha_confirmacion)::int AS mes, COUNT(*) AS total FROM CONFIRMACION WHERE EXTRACT(YEAR FROM fecha_confirmacion) = EXTRACT(YEAR FROM CURRENT_DATE) GROUP BY mes) c ON m.mes = c.mes
+            LEFT JOIN (SELECT EXTRACT(MONTH FROM fecha_matrimonio)::int AS mes, COUNT(*) AS total FROM MATRIMONIO WHERE EXTRACT(YEAR FROM fecha_matrimonio) = EXTRACT(YEAR FROM CURRENT_DATE) GROUP BY mes) mr ON m.mes = mr.mes
+            ORDER BY m.mes
             """);
     }
 

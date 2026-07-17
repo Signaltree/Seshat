@@ -1,57 +1,58 @@
-<div class="bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto" th:fragment="formulario">
-    <h2 class="text-2xl font-bold text-granate mb-6" th:if="${persona.id == 0}">Nueva Persona</h2>
-    <h2 class="text-2xl font-bold text-granate mb-6" th:unless="${persona.id == 0}">Editar Persona</h2>
+<div class="bg-white rounded-2xl p-6 max-w-2xl mx-auto shadow-sm border border-slate-200/60 card" th:fragment="formulario">
+    <h2 class="text-xl font-serif font-bold text-slate-800 mb-6" th:if="${persona.id == 0}">Nueva Persona</h2>
+    <h2 class="text-xl font-serif font-bold text-slate-800 mb-6" th:unless="${persona.id == 0}">Editar Persona</h2>
     <form hx-post="/personas/guardar" hx-target="#main-content" class="grid grid-cols-2 gap-4">
         <input type="hidden" name="id" th:value="${persona.id}">
-        <div th:if="${errores != null}" class="col-span-2 bg-red-100 text-red-700 px-4 py-2 rounded-lg">
+        <div th:if="${errores != null}" class="col-span-2 bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-sm">
             <ul class="list-disc list-inside">
                 <li th:each="err : ${errores}" th:text="${err.value}"></li>
             </ul>
         </div>
         <div class="col-span-2 sm:col-span-1">
-            <label class="block text-gray-700 font-medium mb-1">Nombres</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Nombres</label>
             <input type="text" name="nombres" th:value="${persona.nombres}" required
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
         <div class="col-span-2 sm:col-span-1">
-            <label class="block text-gray-700 font-medium mb-1">Apellidos</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Apellidos</label>
             <input type="text" name="apellidos" th:value="${persona.apellidos}" required
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">RUT</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">RUT</label>
             <input type="text" name="rut" th:value="${persona.rut}"
-                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
-                   th:classappend="${errores != null && errores.containsKey('rut') ? 'border-red-500' : 'border-gray-300'}">
+                   class="w-full border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400"
+                   th:classappend="${errores != null && errores.containsKey('rut') ? 'border-red-400' : 'border-slate-300'}">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Fecha Nacimiento</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Fecha Nacimiento</label>
             <input type="date" name="fecha_nacimiento" th:value="${persona.fecha_nacimiento}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Teléfono</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Teléfono</label>
             <input type="text" name="telefono" th:value="${persona.telefono}"
-                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
-                   th:classappend="${errores != null && errores.containsKey('telefono') ? 'border-red-500' : 'border-gray-300'}">
+                   class="w-full border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400"
+                   th:classappend="${errores != null && errores.containsKey('telefono') ? 'border-red-400' : 'border-slate-300'}">
         </div>
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Email</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Email</label>
             <input type="email" name="email" th:value="${persona.email}"
-                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-granate"
-                   th:classappend="${errores != null && errores.containsKey('email') ? 'border-red-500' : 'border-gray-300'}">
+                   class="w-full border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400"
+                   th:classappend="${errores != null && errores.containsKey('email') ? 'border-red-400' : 'border-slate-300'}">
         </div>
         <div class="col-span-2">
-            <label class="block text-gray-700 font-medium mb-1">Dirección</label>
+            <label class="block text-slate-600 text-sm font-medium mb-1.5">Dirección</label>
             <input type="text" name="direccion" th:value="${persona.direccion}"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-granate">
+                   class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500 transition-colors bg-white text-slate-800 placeholder:text-slate-400">
         </div>
-        <div class="col-span-2 flex gap-4 mt-4">
-            <button type="submit" class="bg-cuero text-white px-8 py-2 rounded-lg hover:bg-cuero-light transition text-lg">
+        <div class="col-span-2 flex gap-3 mt-4">
+            <button type="submit" class="btn flex items-center gap-1.5 bg-emerald-600 text-white font-medium px-6 py-2.5 rounded-xl hover:bg-emerald-500 transition-all text-sm shadow-sm hover:shadow-md hover:shadow-emerald-500/20">
+                <span class="material-symbols-outlined text-lg">save</span>
                 Guardar
             </button>
             <a href="/personas" hx-get="/personas" hx-target="#main-content"
-               class="bg-gray-300 text-gray-700 px-8 py-2 rounded-lg hover:bg-gray-400 transition text-lg text-center">
+               class="btn flex items-center gap-1.5 bg-transparent border border-slate-300 text-slate-700 px-6 py-2.5 rounded-xl hover:bg-slate-100 transition-all text-sm">
                 Cancelar
             </a>
         </div>
